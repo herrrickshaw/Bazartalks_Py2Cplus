@@ -1,0 +1,10 @@
+{
+  "name": "bazaartalks-cpp",
+  "version": "0.1.0",
+  "dependencies": [
+    "eigen3",
+    "date",
+    "catch2",
+    "nlohmann-json"
+  ]
+}

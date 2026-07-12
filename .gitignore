@@ -1,0 +1,8 @@
+build/
+vcpkg/
+vcpkg_installed/
+.cache/
+compile_commands.json
+*.o
+*.obj
+CMakeUserPresets.json

@@ -1,0 +1,65 @@
+name: build-test-govern
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: brew install cmake ninja pkg-config
+
+      - name: Cache vcpkg
+        uses: actions/cache@v4
+        with:
+          path: |
+            vcpkg
+            build/ci-build/vcpkg_installed
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
+
+      - name: Bootstrap vcpkg
+        run: |
+          if [ ! -d vcpkg ]; then
+            git clone --depth 1 https://github.com/microsoft/vcpkg.git
+          fi
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+
+      - name: Configure
+        run: cmake --preset ci-build
+
+      - name: Build
+        run: cmake --build --preset ci-build
+
+      - name: Test
+        run: ctest --preset ci-test
+
+  governance:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Phase-boundary / layering check
+        run: python3 scripts/check_layering.py
+
+  integrity:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify tracked-file checksums
+        run: bash scripts/verify_integrity.sh
+
+  # Activated starting with Phase 6 (PIT/backtest modules): a required,
+  # blocking check specifically for changes to libs/quant_core/backtest/**,
+  # running the exact-match inclusion-set + lookahead-injection adversarial
+  # tests described in docs/MIGRATION_PLAN.md. Left as a placeholder here
+  # since that library doesn't exist yet in Phase 0/1.
+  # parity-gate:
+  #   if: contains(github.event.pull_request.changed_files, 'libs/quant_core/backtest/')
+  #   runs-on: macos-14
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: ctest --preset ci-test -L pit-lookahead-gate
