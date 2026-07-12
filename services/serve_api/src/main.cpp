@@ -29,6 +29,7 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <set>
 
 using namespace bazaartalks::quant_core;
 using bazaartalks::storage::Warehouse;
@@ -57,17 +58,35 @@ Json::Value row_to_json(duckdb::MaterializedQueryResult& result) {
   for (auto& row : result) {
     Json::Value obj;
     for (std::size_t c = 0; c < names.size(); ++c) {
-      auto val = row.GetValue<std::string>(c);
       if (row.IsNull(c)) {
         obj[names[c]] = Json::Value::null;
       } else if (types[c].IsNumeric()) {
-        try {
-          obj[names[c]] = std::stod(val);
-        } catch (...) {
-          obj[names[c]] = val;
-        }
+        // GetValue<double>() reads the raw column value directly. Do NOT
+        // route numeric columns through GetValue<std::string>() then
+        // std::stod() -- DuckDB's string conversion for a DOUBLE uses a
+        // human-readable, reduced-precision representation (verified
+        // against real OHLC data during the Phase 9 parallel-run cutover:
+        // an actual Close price of 283.779999 round-tripped through that
+        // string conversion came back as 283.78, silently discarding real
+        // precision every numeric route serves).
+        obj[names[c]] = row.GetValue<double>(c);
       } else {
-        obj[names[c]] = val;
+        std::string s = row.GetValue<std::string>(c);
+        // DuckDB's own string conversion for DATE/TIMESTAMP (of any of its
+        // several precision variants -- TIMESTAMP, TIMESTAMP_NS/MS/S, as
+        // seen from a parquet-sourced column here) uses a space separator
+        // ("2026-06-26 00:00:00"); pandas' to_dict()/JSON serialization of
+        // the equivalent Timestamp uses ISO-8601's "T"
+        // ("2026-06-26T00:00:00") -- found by diffing /ticker responses
+        // against the real serve.py during the Phase 9 parallel-run
+        // cutover. Detect by STRING SHAPE (a space at position 10 of a
+        // "YYYY-MM-DD HH:MM:SS"-length value) rather than enumerating
+        // every LogicalTypeId timestamp variant, so this doesn't silently
+        // miss one.
+        if (s.size() >= 19 && s[4] == '-' && s[7] == '-' && s[10] == ' ') {
+          s[10] = 'T';
+        }
+        obj[names[c]] = s;
       }
     }
     rows.append(obj);
@@ -224,14 +243,48 @@ int main(int argc, char** argv) {
           return;
         }
         auto wh = connect();
-        auto ohlc = wh->query("SELECT Date, Open, High, Low, Close, Volume FROM ohlc "
-                              "WHERE ticker='" +
-                              symbol + "' AND market='" + mkt +
-                              "' ORDER BY Date DESC LIMIT 60");
+        // Port of warehouse.py's ticker_detail(): OHLC history plus
+        // whichever of fundamentals/dvm_global/dvm_composite are
+        // currently built, silently omitted (null) rather than erroring
+        // if a view is absent -- matching the "skip what's absent"
+        // convention `available = {SHOW TABLES}` enforces there.
+        auto available_vec = wh->tables();
+        std::set<std::string> available(available_vec.begin(), available_vec.end());
+
         Json::Value j;
         j["ticker"] = symbol;
         j["market"] = mkt;
-        j["ohlc"] = row_to_json(*ohlc);
+
+        if (available.count("ohlc")) {
+          auto ohlc = wh->query("SELECT Date, Open, High, Low, Close, Volume FROM ohlc "
+                                "WHERE ticker='" +
+                                symbol + "' AND market='" + mkt +
+                                "' ORDER BY Date DESC LIMIT 60");
+          j["ohlc"] = row_to_json(*ohlc);
+        } else {
+          j["ohlc"] = Json::Value(Json::arrayValue);
+        }
+
+        auto join_view = [&](const std::string& view, const std::string& key) {
+          if (!available.count(view)) {
+            j[key] = Json::Value::null;
+            return;
+          }
+          auto result = wh->query("SELECT * FROM " + view + " WHERE ticker='" + symbol +
+                                  "' AND market='" + mkt + "' LIMIT 1");
+          auto rows = row_to_json(*result);
+          j[key] = rows.empty() ? Json::Value::null : rows[0];
+        };
+        join_view("fundamentals", "fundamentals");
+        join_view("dvm_global", "dvm_technical");
+        join_view("dvm_composite", "dvm_composite");
+
+        bool has_any = !j["ohlc"].empty() || !j["fundamentals"].isNull() ||
+                      !j["dvm_technical"].isNull() || !j["dvm_composite"].isNull();
+        if (!has_any) {
+          callback(json_error(k404NotFound, "no data for " + symbol + "/" + mkt));
+          return;
+        }
         callback(HttpResponse::newHttpJsonResponse(j));
       },
       {Get});
