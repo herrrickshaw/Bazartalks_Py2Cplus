@@ -12,6 +12,7 @@
     {
       "name": "arrow",
       "features": ["parquet"]
-    }
+    },
+    "drogon"
   ]
 }

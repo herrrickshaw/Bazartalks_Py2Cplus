@@ -40,7 +40,10 @@ add_subdirectory(libs/quant_core)
 # and libs/stats' RSI/rolling-max kernels).
 add_subdirectory(services/stream_consumers)
 
+# Phase 8: HTTP serving layer (Drogon), wiring together query_catalog,
+# charts, and the Phase 2 DuckDB warehouse client.
+add_subdirectory(services/serve_api)
+
 # Later phases, added incrementally as each lands:
 # add_subdirectory(libs/http)
-# add_subdirectory(services/serve_api)
 # add_subdirectory(services/pipeline_cli)
