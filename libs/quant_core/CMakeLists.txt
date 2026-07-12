@@ -21,4 +21,6 @@ add_subdirectory(screen_viability)
 add_subdirectory(pit_backtest)
 add_subdirectory(pit_global)
 add_subdirectory(query_catalog)
+add_subdirectory(charts)
+add_subdirectory(ticker_view)
 
