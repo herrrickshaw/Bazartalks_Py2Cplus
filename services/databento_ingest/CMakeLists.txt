@@ -1,0 +1,3 @@
+add_executable(bt_databento_ingest src/main.cpp)
+target_link_libraries(bt_databento_ingest PRIVATE bt_databento_client)
+target_compile_features(bt_databento_ingest PUBLIC cxx_std_20)

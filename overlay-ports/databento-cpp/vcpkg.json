@@ -1,0 +1,22 @@
+{
+  "name": "databento-cpp",
+  "version": "0.61.0",
+  "description": "Official C++ client library for Databento",
+  "homepage": "https://github.com/databento/databento-cpp",
+  "license": "Apache-2.0",
+  "dependencies": [
+    "cpp-httplib",
+    "date",
+    "nlohmann-json",
+    "openssl",
+    "zstd",
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ]
+}

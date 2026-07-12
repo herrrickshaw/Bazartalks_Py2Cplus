@@ -50,5 +50,11 @@ add_subdirectory(services/serve_api)
 # --graphics/--live).
 add_subdirectory(services/pipeline_cli)
 
+# New capability (not a migration phase -- no Python original exists): a
+# historical OHLCV-1m/TBBO ingest CLI over the Databento market-data vendor,
+# wiring libs/storage/databento_client. See docs/MIGRATION_PLAN.md's
+# Databento integration section.
+add_subdirectory(services/databento_ingest)
+
 # Later phases, added incrementally as each lands:
 # add_subdirectory(libs/http)

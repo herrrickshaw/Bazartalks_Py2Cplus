@@ -13,6 +13,7 @@
       "name": "arrow",
       "features": ["parquet"]
     },
-    "drogon"
+    "drogon",
+    "databento-cpp"
   ]
 }
