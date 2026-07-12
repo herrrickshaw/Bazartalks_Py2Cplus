@@ -19,3 +19,5 @@ add_subdirectory(dvm_engine)
 add_subdirectory(dvm_composite)
 add_subdirectory(screen_viability)
 add_subdirectory(pit_backtest)
+add_subdirectory(pit_global)
+
