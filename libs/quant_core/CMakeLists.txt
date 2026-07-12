@@ -1,5 +1,9 @@
 add_subdirectory(risk)
 add_subdirectory(cost_models)
 add_subdirectory(universe)
-# meta_screen, fx, unlisted_valuation, crowding, hft_selection, darvas_volume
-# added as each Phase 3 module lands.
+add_subdirectory(meta_screen)
+add_subdirectory(fx)
+add_subdirectory(unlisted_valuation)
+add_subdirectory(crowding)
+add_subdirectory(hft_selection)
+add_subdirectory(darvas_volume)
