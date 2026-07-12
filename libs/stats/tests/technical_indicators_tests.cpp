@@ -145,3 +145,30 @@ TEST_CASE("up_down_volume_ratio edge cases match Python's +inf/NaN convention",
   double r_flat = up_down_volume_ratio(flat_close, vol);
   CHECK(std::isnan(r_flat));
 }
+
+// python3: pd.Series(x).rolling(5).std() on a fixed 20-bar random-walk
+// (np.random.seed(50))
+TEST_CASE("rolling_std matches pandas' sample (ddof=1) rolling std", "[indicators]") {
+  std::vector<double> x = {98.43964789, 98.40867029, 97.78774186, 96.32316138, 97.73510750,
+                            97.25837536, 96.47790614, 97.54817388, 96.26588128, 94.93840238,
+                            95.06474002, 95.92693374, 96.62367070, 96.28910552, 95.29157945,
+                            96.89048775, 100.20456309, 101.19233355, 101.31619981, 102.05898520};
+  auto s = rolling_std(x, 5);
+  for (int i = 0; i < 4; ++i) CHECK(std::isnan(s[i]));
+  CHECK(s[4] == Approx(0.85824757));
+  CHECK(s[5] == Approx(0.77573354));
+  CHECK(s[9] == Approx(1.02074276));
+  CHECK(s[19] == Approx(2.03417959));
+}
+
+// python3: pd.Series(x).ewm(span=3, adjust=False).mean() on the same series
+TEST_CASE("ewm_mean_no_adjust matches pandas' adjust=False recursive EMA", "[indicators]") {
+  std::vector<double> x = {98.43964789, 98.40867029, 97.78774186, 96.32316138, 97.73510750,
+                            97.25837536, 96.47790614, 97.54817388, 96.26588128, 94.93840238,
+                            95.06474002, 95.92693374, 96.62367070, 96.28910552, 95.29157945,
+                            96.89048775, 100.20456309, 101.19233355, 101.31619981, 102.05898520};
+  auto e = ewm_mean_no_adjust(x, 3);
+  CHECK(e[0] == Approx(98.43964789));
+  CHECK(e[1] == Approx(98.42415909));
+  CHECK(e[19] == Approx(101.29061503));
+}

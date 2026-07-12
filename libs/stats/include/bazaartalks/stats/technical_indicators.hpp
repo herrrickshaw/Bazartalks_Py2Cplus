@@ -39,6 +39,11 @@ std::vector<double> rolling_mean(const std::vector<double>& x, std::size_t windo
 // window (used by momentum_score()'s 52-week-high proximity check).
 std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window);
 
+// pandas Series.rolling(window).std() -- SAMPLE std (ddof=1, pandas'
+// default), same min_periods=window all-or-nothing NaN convention as
+// rolling_mean/rolling_max.
+std::vector<double> rolling_std(const std::vector<double>& x, std::size_t window);
+
 // pandas Series.ewm(span=N).mean() with adjust=True (pandas' default):
 // a weighted average of the full history so far, NOT a simple recursive
 // EMA -- see the .cpp for the exact recursive num/den formulation. Assumes
@@ -46,6 +51,13 @@ std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window
 // to in every Python caller, per stock_utils.clean_ohlcv's upstream
 // guarantee).
 std::vector<double> ewm_mean(const std::vector<double>& x, int span);
+
+// pandas Series.ewm(span=N, adjust=False).mean(): a plain recursive EMA,
+// y[0]=x[0], y[t] = alpha*x[t] + (1-alpha)*y[t-1]. Distinct from
+// ewm_mean() above (adjust=True) -- ml_signal_engine.py's MACD uses
+// adjust=False explicitly, while dvm_engine.py's MACD (Phase 5) uses the
+// adjust=True default; do not conflate the two.
+std::vector<double> ewm_mean_no_adjust(const std::vector<double>& x, int span);
 
 // Port of momentum_score()'s inline RSI: rolling(14) average gain/loss,
 // with the average-loss-of-exactly-zero -> NaN guard replicated verbatim

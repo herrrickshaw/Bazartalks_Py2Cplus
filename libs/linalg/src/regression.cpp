@@ -40,6 +40,17 @@ Vector ridge(const Matrix& X, const Vector& y, double alpha) {
   return XtX.ldlt().solve(Xty);
 }
 
+RidgeResult ridge_with_intercept(const Matrix& X, const Vector& y, double alpha) {
+  Vector x_mean = X.colwise().mean();
+  double y_mean = y.mean();
+  Matrix Xc = X.rowwise() - x_mean.transpose();
+  Vector yc = y.array() - y_mean;
+
+  Vector beta = ridge(Xc, yc, alpha);
+  double intercept = y_mean - x_mean.dot(beta);
+  return RidgeResult{beta, intercept};
+}
+
 OlsResult ols_with_stats(const Matrix& X, const Vector& y) {
   Matrix Xd(X.rows(), X.cols() + 1);
   Xd.col(0).setOnes();

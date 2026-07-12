@@ -52,6 +52,31 @@ std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window
   return out;
 }
 
+std::vector<double> rolling_std(const std::vector<double>& x, std::size_t window) {
+  std::vector<double> out(x.size(), kNaN);
+  if (window < 2 || window > x.size()) return out;
+  for (std::size_t i = window - 1; i < x.size(); ++i) {
+    double sum = 0.0;
+    for (std::size_t j = i + 1 - window; j <= i; ++j) sum += x[j];
+    double mean = sum / static_cast<double>(window);
+    double sq = 0.0;
+    for (std::size_t j = i + 1 - window; j <= i; ++j) sq += (x[j] - mean) * (x[j] - mean);
+    out[i] = std::sqrt(sq / static_cast<double>(window - 1));  // ddof=1, pandas' default
+  }
+  return out;
+}
+
+std::vector<double> ewm_mean_no_adjust(const std::vector<double>& x, int span) {
+  std::vector<double> out(x.size(), kNaN);
+  if (x.empty()) return out;
+  double alpha = 2.0 / (static_cast<double>(span) + 1.0);
+  out[0] = x[0];
+  for (std::size_t i = 1; i < x.size(); ++i) {
+    out[i] = alpha * x[i] + (1.0 - alpha) * out[i - 1];
+  }
+  return out;
+}
+
 std::vector<double> ewm_mean(const std::vector<double>& x, int span) {
   std::vector<double> out(x.size(), kNaN);
   if (x.empty()) return out;

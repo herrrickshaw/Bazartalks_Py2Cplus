@@ -26,11 +26,24 @@ Vector ols(const Matrix& X, const Vector& y);
 // convention (see file-level note above).
 Matrix pinv(const Matrix& A);
 
-// Closed-form ridge regression: beta = (X^T X + alpha*I)^-1 X^T y.
-// Matches ml_signal_engine.py's sklearn.linear_model.Ridge(alpha=...) for
-// the no-intercept, pre-centered-feature case that module uses internally
-// (features are z-score normalised before this is called).
+// Closed-form ridge regression, NO intercept: beta = (X^T X + alpha*I)^-1 X^T y.
 Vector ridge(const Matrix& X, const Vector& y, double alpha);
+
+struct RidgeResult {
+  Vector beta;
+  double intercept;
+};
+
+// Closed-form ridge matching sklearn.linear_model.Ridge(alpha=...,
+// fit_intercept=True) (ml_signal_engine.py's actual configuration): center
+// X and y by their column/sample means, solve the no-intercept closed
+// form on the centered data (the L2 penalty does not apply to the
+// intercept), then recover intercept = y_mean - x_mean.dot(beta). This is
+// NOT equivalent to plain ridge() even when X happens to be per-row
+// z-scored (ml_signal_engine.py z-scores each sliding WINDOW
+// independently before flattening; the stacked training matrix's
+// columns are not themselves mean-zero across samples).
+RidgeResult ridge_with_intercept(const Matrix& X, const Vector& y, double alpha);
 
 // Ridge-regression standard errors (OLS-style, homoskedastic) are NOT
 // computed here -- factor_research.py's hand-rolled OLS t-stats are a
