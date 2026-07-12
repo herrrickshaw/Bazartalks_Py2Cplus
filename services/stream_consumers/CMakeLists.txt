@@ -1,0 +1,3 @@
+add_subdirectory(cdc_consumer)
+add_subdirectory(signal_consumer)
+add_subdirectory(ticker_signal_pipeline)

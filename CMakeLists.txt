@@ -36,8 +36,11 @@ add_subdirectory(libs/storage)
 # libs/stats, libs/linalg -- no storage/streaming dependency).
 add_subdirectory(libs/quant_core)
 
+# Phase 7: streaming consumers (depends on libs/streaming's Kafka client
+# and libs/stats' RSI/rolling-max kernels).
+add_subdirectory(services/stream_consumers)
+
 # Later phases, added incrementally as each lands:
 # add_subdirectory(libs/http)
-# add_subdirectory(services/stream_consumers)
 # add_subdirectory(services/serve_api)
 # add_subdirectory(services/pipeline_cli)
