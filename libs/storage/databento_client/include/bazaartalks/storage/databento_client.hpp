@@ -61,6 +61,21 @@ struct DatabentoBar {
   std::uint64_t volume = 0;
 };
 
+// DBEQ.BASIC (and other bundled US equities datasets) returns multiple rows
+// per (symbol, ts_event_ns) for OHLCV schemas -- one per contributing
+// publisher/venue, all sharing the identical timestamp. Since ohlcv_1m/
+// ohlcv_1d's PRIMARY KEY is (symbol, ts_event_ns), naively inserting with
+// INSERT OR IGNORE would keep whichever publisher's row NextRecord() happens
+// to yield first -- not a documented API ordering guarantee, and not
+// reproducible across re-ingests. Collapses `bars` to one entry per distinct
+// ts_event_ns, keeping the highest-volume ("most representative venue") row
+// -- the same convention verify_data.py::verify_us() already uses to pick a
+// representative bar. Pure, network-free -- exposed separately from
+// fetch_and_store() so this exact logic is unit-testable without a live
+// Databento call (see databento_client_tests.cpp), same rationale as
+// evaluate_cost_gate() below.
+std::vector<DatabentoBar> dedupe_by_max_volume(std::vector<DatabentoBar> bars);
+
 // Decoded TBBO record (databento::Mbp1Msg -- a trade paired with the best
 // bid/offer immediately before it).
 struct DatabentoQuote {

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <ctime>
 #include <sstream>
+#include <unordered_map>
 
 #include "bazaartalks/storage/sqlite_db.hpp"
 #include "databento/constants.hpp"
@@ -160,6 +161,22 @@ CostGateDecision evaluate_cost_gate(double estimated_cost_usd, double threshold_
 
 std::string to_string(DatabentoSchema schema) { return table_for(schema); }
 
+std::vector<DatabentoBar> dedupe_by_max_volume(std::vector<DatabentoBar> bars) {
+  std::unordered_map<std::int64_t, DatabentoBar> by_ts;
+  for (auto& bar : bars) {
+    auto it = by_ts.find(bar.ts_event_ns);
+    if (it == by_ts.end() || bar.volume > it->second.volume) {
+      by_ts[bar.ts_event_ns] = std::move(bar);
+    }
+  }
+  std::vector<DatabentoBar> deduped;
+  deduped.reserve(by_ts.size());
+  for (auto& [ts_ns, bar] : by_ts) {
+    deduped.push_back(std::move(bar));
+  }
+  return deduped;
+}
+
 struct DatabentoClient::Impl {
   SqliteDb db;
   double cost_threshold_usd;
@@ -250,20 +267,34 @@ std::size_t DatabentoClient::fetch_and_store(const std::string& dataset,
 
   std::size_t written = 0;
   if (is_ohlcv(schema)) {
+    std::vector<DatabentoBar> decoded_bars;
+    while (const auto* record = store.NextRecord()) {
+      const auto& bar = record->Get<db::OhlcvMsg>();
+      DatabentoBar decoded;
+      decoded.symbol = symbol;
+      decoded.ts_event_ns = static_cast<std::int64_t>(bar.hd.ts_event.time_since_epoch().count());
+      decoded.open = from_fixed_price(bar.open);
+      decoded.high = from_fixed_price(bar.high);
+      decoded.low = from_fixed_price(bar.low);
+      decoded.close = from_fixed_price(bar.close);
+      decoded.volume = static_cast<std::uint64_t>(bar.volume);
+      decoded_bars.push_back(std::move(decoded));
+    }
+
+    // See dedupe_by_max_volume()'s own comment (databento_client.hpp) for why
+    // this is necessary rather than inserting every decoded record directly.
     auto stmt = impl_->db.prepare(
         "INSERT OR IGNORE INTO " + table_for(schema) +
         "(symbol, ts_event_ns, date, open, high, low, close, "
         "volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    while (const auto* record = store.NextRecord()) {
-      const auto& bar = record->Get<db::OhlcvMsg>();
-      auto ts_ns = static_cast<std::int64_t>(bar.hd.ts_event.time_since_epoch().count());
-      stmt.bind(1, symbol);
-      stmt.bind(2, ts_ns);
-      stmt.bind(3, date_from_ts_event_ns(ts_ns));
-      stmt.bind(4, from_fixed_price(bar.open));
-      stmt.bind(5, from_fixed_price(bar.high));
-      stmt.bind(6, from_fixed_price(bar.low));
-      stmt.bind(7, from_fixed_price(bar.close));
+    for (const auto& bar : dedupe_by_max_volume(std::move(decoded_bars))) {
+      stmt.bind(1, bar.symbol);
+      stmt.bind(2, bar.ts_event_ns);
+      stmt.bind(3, date_from_ts_event_ns(bar.ts_event_ns));
+      stmt.bind(4, bar.open);
+      stmt.bind(5, bar.high);
+      stmt.bind(6, bar.low);
+      stmt.bind(7, bar.close);
       stmt.bind(8, static_cast<std::int64_t>(bar.volume));
       stmt.step();
       stmt.reset();

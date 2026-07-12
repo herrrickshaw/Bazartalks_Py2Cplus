@@ -16,6 +16,8 @@
 
 #include <cstdio>
 #include <filesystem>
+#include <utility>
+#include <vector>
 
 #include "bazaartalks/storage/databento_client.hpp"
 
@@ -96,4 +98,73 @@ TEST_CASE("to_string(DatabentoSchema) matches the table names used internally",
   CHECK(to_string(DatabentoSchema::Ohlcv1M) == "ohlcv_1m");
   CHECK(to_string(DatabentoSchema::Ohlcv1D) == "ohlcv_1d");
   CHECK(to_string(DatabentoSchema::Tbbo) == "tbbo");
+}
+
+// Regression coverage for the multi-publisher DBEQ.BASIC shape described in
+// benchmarks/pipeline_cutover/databento_client_comparison.md's Finding #2:
+// three venues reporting the same (symbol, ts_event_ns) with different
+// volumes. dedupe_by_max_volume() must keep exactly the highest-volume row,
+// not whichever one happened to be encountered first.
+TEST_CASE("dedupe_by_max_volume keeps the highest-volume row per ts_event_ns",
+          "[databento][dedupe]") {
+  // Mirrors the confirmed real-world MSFT case: stored row (publisher 40,
+  // vol 15,072) was NOT the max-volume row (publisher 41, vol 969,305).
+  std::vector<DatabentoBar> bars = {
+      {"MSFT", /*ts=*/1000, 385.09, 385.10, 385.00, 385.09, /*vol=*/15'072},
+      {"MSFT", /*ts=*/1000, 385.09, 385.12, 384.95, 385.09, /*vol=*/468'339},
+      {"MSFT", /*ts=*/1000, 385.08, 385.15, 384.90, 385.08, /*vol=*/969'305},
+  };
+
+  auto deduped = dedupe_by_max_volume(std::move(bars));
+
+  REQUIRE(deduped.size() == 1);
+  CHECK(deduped[0].symbol == "MSFT");
+  CHECK(deduped[0].ts_event_ns == 1000);
+  CHECK(deduped[0].volume == 969'305);
+  CHECK(deduped[0].close == 385.08);
+}
+
+TEST_CASE("dedupe_by_max_volume treats distinct ts_event_ns as distinct bars",
+          "[databento][dedupe]") {
+  // AAPL, SPY on different days/timestamps -- each publisher-triple must
+  // collapse independently, not get merged across timestamps or symbols.
+  std::vector<DatabentoBar> bars = {
+      {"AAPL", /*ts=*/1000, 315.04, 316.0, 314.0, 315.04, /*vol=*/865'253},
+      {"AAPL", /*ts=*/1000, 315.29, 316.0, 314.5, 315.29, /*vol=*/62'493},
+      {"AAPL", /*ts=*/1000, 315.14, 316.0, 314.0, 315.14, /*vol=*/1'326'282},
+      {"SPY", /*ts=*/2000, 500.0, 501.0, 499.0, 500.0, /*vol=*/25'000},
+      {"SPY", /*ts=*/2000, 500.5, 501.0, 499.0, 500.5, /*vol=*/1'270'000},
+  };
+
+  auto deduped = dedupe_by_max_volume(std::move(bars));
+
+  REQUIRE(deduped.size() == 2);
+  for (const auto& bar : deduped) {
+    if (bar.symbol == "AAPL") {
+      CHECK(bar.ts_event_ns == 1000);
+      CHECK(bar.volume == 1'326'282);
+      CHECK(bar.close == 315.14);
+    } else {
+      REQUIRE(bar.symbol == "SPY");
+      CHECK(bar.volume == 1'270'000);
+      CHECK(bar.close == 500.5);
+    }
+  }
+}
+
+TEST_CASE("dedupe_by_max_volume is a no-op for already-unique ts_event_ns values",
+          "[databento][dedupe]") {
+  std::vector<DatabentoBar> bars = {
+      {"SPY", /*ts=*/1000, 500.0, 501.0, 499.0, 500.5, /*vol=*/1'000},
+      {"SPY", /*ts=*/2000, 501.0, 502.0, 500.0, 501.5, /*vol=*/2'000},
+  };
+
+  auto deduped = dedupe_by_max_volume(std::move(bars));
+
+  REQUIRE(deduped.size() == 2);
+}
+
+TEST_CASE("dedupe_by_max_volume on an empty input returns an empty result",
+          "[databento][dedupe]") {
+  CHECK(dedupe_by_max_volume({}).empty());
 }
