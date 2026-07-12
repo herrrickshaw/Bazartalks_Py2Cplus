@@ -56,20 +56,24 @@ std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window
   return out;
 }
 
-std::vector<double> rolling_min(const std::vector<double>& x, std::size_t window) {
-  std::vector<double> out(x.size(), kNaN);
-  if (window == 0 || window > x.size()) return out;
-  for (std::size_t i = window - 1; i < x.size(); ++i) {
-    double m = x[i + 1 - window];
-    bool any_nan = std::isnan(m);
-    for (std::size_t j = i + 2 - window; j <= i; ++j) {
-      if (std::isnan(x[j])) {
-        any_nan = true;
-      } else if (!any_nan && x[j] < m) {
-        m = x[j];
+std::vector<double> rolling_min(const std::vector<double>& x, std::size_t window,
+                                std::size_t min_periods) {
+  std::size_t n = x.size();
+  std::vector<double> out(n, kNaN);
+  if (window == 0) return out;
+  std::size_t required = min_periods == 0 ? window : min_periods;
+
+  for (std::size_t i = 0; i < n; ++i) {
+    std::size_t start = i + 1 >= window ? i + 1 - window : 0;
+    double m = kNaN;
+    std::size_t count = 0;
+    for (std::size_t j = start; j <= i; ++j) {
+      if (std::isfinite(x[j])) {
+        if (count == 0 || x[j] < m) m = x[j];
+        ++count;
       }
     }
-    out[i] = any_nan ? kNaN : m;
+    out[i] = count >= required ? m : kNaN;
   }
   return out;
 }

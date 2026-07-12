@@ -48,7 +48,11 @@ std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window
 
 // Same min_periods=window convention, the min over the window (used by
 // the Donchian channel's lower band in the momentum-breakout strategy).
-std::vector<double> rolling_min(const std::vector<double>& x, std::size_t window);
+// `min_periods` (0 = default to `window`) mirrors rolling_max's parameter
+// -- e.g. screen_viability.py's `rolling(252, min_periods=120)` 52-week-low
+// calc.
+std::vector<double> rolling_min(const std::vector<double>& x, std::size_t window,
+                                std::size_t min_periods = 0);
 
 // pandas Series.rolling(window).std() -- SAMPLE std (ddof=1, pandas'
 // default), same min_periods=window all-or-nothing NaN convention as
