@@ -1,0 +1,3 @@
+add_executable(bt_pipeline_cli src/main.cpp)
+target_link_libraries(bt_pipeline_cli PRIVATE bt_duckdb_client)
+target_compile_features(bt_pipeline_cli PUBLIC cxx_std_20)

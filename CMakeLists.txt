@@ -44,6 +44,11 @@ add_subdirectory(services/stream_consumers)
 # charts, and the Phase 2 DuckDB warehouse client.
 add_subdirectory(services/serve_api)
 
+# Phase 9: orchestration CLI, wiring the already-ported Warehouse into a
+# native --process/--analyze path while shelling out to the Python
+# sidecar for stages with no portable structure (--source/--validate/
+# --graphics/--live).
+add_subdirectory(services/pipeline_cli)
+
 # Later phases, added incrementally as each lands:
 # add_subdirectory(libs/http)
-# add_subdirectory(services/pipeline_cli)
