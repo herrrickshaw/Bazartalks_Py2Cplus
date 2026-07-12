@@ -1,0 +1,4 @@
+add_subdirectory(sqlite_client)
+add_subdirectory(duckdb_client)
+add_subdirectory(cassandra_client)
+add_subdirectory(parquet_io)

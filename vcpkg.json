@@ -5,6 +5,13 @@
     "eigen3",
     "date",
     "catch2",
-    "nlohmann-json"
+    "nlohmann-json",
+    "sqlite3",
+    "duckdb",
+    "librdkafka",
+    {
+      "name": "arrow",
+      "features": ["parquet"]
+    }
   ]
 }

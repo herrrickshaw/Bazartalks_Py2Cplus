@@ -27,11 +27,17 @@ add_subdirectory(libs/calendar)
 add_subdirectory(libs/stats)
 add_subdirectory(libs/linalg)
 
-# Phase 2+ targets are added incrementally as each phase lands:
-# add_subdirectory(libs/storage)
-# add_subdirectory(libs/streaming)
+# Phase 2: storage/streaming clients. streaming before storage since
+# cassandra_client's mandatory CDC publish links against bt_kafka_client.
+add_subdirectory(libs/streaming)
+add_subdirectory(libs/storage)
+
+# Phase 3: pure-compute quant_core modules (depends only on libs/calendar,
+# libs/stats, libs/linalg -- no storage/streaming dependency).
+add_subdirectory(libs/quant_core)
+
+# Later phases, added incrementally as each lands:
 # add_subdirectory(libs/http)
-# add_subdirectory(libs/quant_core)
 # add_subdirectory(services/stream_consumers)
 # add_subdirectory(services/serve_api)
 # add_subdirectory(services/pipeline_cli)
