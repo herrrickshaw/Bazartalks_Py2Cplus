@@ -14,6 +14,9 @@
   Status / logs:
     launchctl print gui/$(id -u)/com.umashankar.kafkasignalconsumercpp
     tail -f ~/BazaarTalks-cpp/logs/bt_signal_consumer.log
+
+  NOTE (2026-07-12): switched from build/debug/ to build/release/ -- see
+  com.umashankar.kafkacdcconsumercpp.plist's identical note for why.
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -21,7 +24,7 @@
   <key>Label</key><string>com.umashankar.kafkasignalconsumercpp</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/umashankar/BazaarTalks-cpp/build/debug/services/stream_consumers/signal_consumer/bt_signal_consumer</string>
+    <string>/Users/umashankar/BazaarTalks-cpp/build/release/services/stream_consumers/signal_consumer/bt_signal_consumer</string>
     <string>--window</string>
     <string>5</string>
     <string>--group-id</string>
