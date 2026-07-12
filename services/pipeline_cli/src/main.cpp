@@ -254,13 +254,30 @@ int main(int argc, char** argv) {
       g_duckdb_path = next();
     } else if (arg == "--sidecar-dir") {
       g_sidecar_dir = next();
+    } else if (arg == "--ohlc-dir") {
+      // Repeatable, like Python's SEED + SEED_LOCAL split unioned into one
+      // glob list -- pass once per directory to glob for cleaned_long_*.parquet.
+      g_paths.ohlc_parquet_dirs.push_back(next());
+    } else if (arg == "--companies-parquet") {
+      g_paths.companies_industry_parquet = next();
+    } else if (arg == "--fundamentals-db") {
+      g_paths.fundamentals_cache_db = next();
+    } else if (arg == "--dvm-global-db") {
+      g_paths.dvm_global_db = next();
+    } else if (arg == "--dvm-composite-db") {
+      g_paths.dvm_composite_db = next();
+    } else if (arg == "--viability-db") {
+      g_paths.viability_summary_db = next();
     }
   }
 
   if (!a.source && !a.validate && !a.process && !a.analyze && !a.graphics && !a.live && !a.all) {
     std::cout << "usage: bt_pipeline_cli [--source MARKET] [--validate] [--process] "
                  "[--analyze MARKET] [--graphics MARKET] [--live MARKET] [--limit N] "
-                 "[--pause SECONDS] [--all MARKET] [--duckdb PATH] [--sidecar-dir DIR]"
+                 "[--pause SECONDS] [--all MARKET] [--duckdb PATH] [--sidecar-dir DIR] "
+                 "[--ohlc-dir DIR (repeatable)] [--companies-parquet PATH] "
+                 "[--fundamentals-db PATH] [--dvm-global-db PATH] [--dvm-composite-db PATH] "
+                 "[--viability-db PATH]"
               << std::endl;
     return 0;
   }
