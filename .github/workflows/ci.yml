@@ -13,12 +13,15 @@ jobs:
 
       - name: Install build tools
         run: |
-          brew install cmake ninja pkg-config bison
+          brew install cmake ninja pkg-config bison cassandra-cpp-driver
           # macos-14 runners ship Apple's ancient BSD bison at /usr/bin/bison
           # (via the Xcode toolchain), which lacks --file-prefix-map and
           # breaks vcpkg's thrift port build. Prepend Homebrew's bison
           # (keg-only, not linked by default) so it wins on PATH.
           echo "$(brew --prefix bison)/bin" >> "$GITHUB_PATH"
+          # cassandra-cpp-driver has no vcpkg port (see
+          # libs/storage/cassandra_client/CMakeLists.txt's own comment) --
+          # it's a system dependency installed via Homebrew, same as bison.
 
       - name: Cache vcpkg
         uses: actions/cache@v4
