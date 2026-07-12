@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd service that periodically runs ops/rotate_kafka_logs.sh -- a
+  copytruncate-style rotator for the 8 log files the 4 Kafka burn-in
+  consumers (com.umashankar.kafka{cdc,signal}consumer[cpp]) write to. Runs
+  as this user (no root needed, unlike newsyslog(8) which refuses to run
+  without root even for user-owned files). Every 15 minutes, checks each
+  log against a 10MB threshold and rotates+gzips (keeping 5 generations) if
+  it's over, leaving the running consumer processes' open file descriptors
+  intact so they keep writing without needing a restart.
+
+  Install / reload:
+    cp com.umashankar.rotatekafkalogs.plist ~/Library/LaunchAgents/
+    launchctl bootout   gui/$(id -u)/com.umashankar.rotatekafkalogs 2>/dev/null
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.umashankar.rotatekafkalogs.plist
+
+  Status / logs:
+    launchctl print gui/$(id -u)/com.umashankar.rotatekafkalogs
+    tail -f ~/BazaarTalks-cpp/logs/rotate_kafka_logs.log
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.umashankar.rotatekafkalogs</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/umashankar/BazaarTalks-cpp/ops/rotate_kafka_logs.sh</string>
+  </array>
+  <key>StartInterval</key><integer>900</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/umashankar/BazaarTalks-cpp/logs/rotate_kafka_logs.log</string>
+  <key>StandardErrorPath</key><string>/Users/umashankar/BazaarTalks-cpp/logs/rotate_kafka_logs.err.log</string>
+</dict>
+</plist>
