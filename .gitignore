@@ -1,4 +1,5 @@
 build/
+logs/
 vcpkg/
 vcpkg_installed/
 .cache/

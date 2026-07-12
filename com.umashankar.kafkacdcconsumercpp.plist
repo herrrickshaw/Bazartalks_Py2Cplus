@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd service for bt_cdc_consumer -- the C++ port of
+  ~/BazaarTalks/kafka_cdc_consumer.py (see docs/MIGRATION_PLAN.md, Phase 7 /
+  Cutover run #3). Runs alongside the Python original in a DISTINCT consumer
+  group (--group-id kafka-cdc-consumer-cpp) so the two don't split ohlc.cdc's
+  partitions between them -- each needs to see every message independently
+  for the parallel-run comparison to mean anything.
+
+  Install / reload:
+    cp com.umashankar.kafkacdcconsumercpp.plist ~/Library/LaunchAgents/
+    launchctl bootout   gui/$(id -u)/com.umashankar.kafkacdcconsumercpp 2>/dev/null
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.umashankar.kafkacdcconsumercpp.plist
+
+  Status / logs:
+    launchctl print gui/$(id -u)/com.umashankar.kafkacdcconsumercpp
+    tail -f ~/BazaarTalks-cpp/logs/bt_cdc_consumer.log
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.umashankar.kafkacdcconsumercpp</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/umashankar/BazaarTalks-cpp/build/debug/services/stream_consumers/cdc_consumer/bt_cdc_consumer</string>
+    <string>--window</string>
+    <string>30</string>
+    <string>--group-id</string>
+    <string>kafka-cdc-consumer-cpp</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/umashankar/BazaarTalks-cpp</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/Users/umashankar/BazaarTalks-cpp/logs/bt_cdc_consumer.log</string>
+  <key>StandardErrorPath</key><string>/Users/umashankar/BazaarTalks-cpp/logs/bt_cdc_consumer.err.log</string>
+</dict>
+</plist>
