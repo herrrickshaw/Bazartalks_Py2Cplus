@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd timer that runs ops/backup_kafka_logs.sh every 10 minutes -- a
+  time-triggered durability snapshot of the 8 Kafka burn-in consumer logs,
+  complementing com.umashankar.rotatekafkalogs's SIZE-triggered rotation.
+  Guarantees a gzip'd, timestamped copy of everything written is never more
+  than ~10 minutes stale, independent of rotation thresholds.
+
+  Install / reload:
+    cp com.umashankar.backupkafkalogs.plist ~/Library/LaunchAgents/
+    launchctl bootout   gui/$(id -u)/com.umashankar.backupkafkalogs 2>/dev/null
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.umashankar.backupkafkalogs.plist
+
+  Status / logs:
+    launchctl print gui/$(id -u)/com.umashankar.backupkafkalogs
+    tail -f ~/BazaarTalks-cpp/logs/backup_kafka_logs.log
+    ls ~/BazaarTalks-cpp/logs/backups/
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.umashankar.backupkafkalogs</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/umashankar/BazaarTalks-cpp/ops/backup_kafka_logs.sh</string>
+  </array>
+  <key>StartInterval</key><integer>600</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/umashankar/BazaarTalks-cpp/logs/backup_kafka_logs.log</string>
+  <key>StandardErrorPath</key><string>/Users/umashankar/BazaarTalks-cpp/logs/backup_kafka_logs.err.log</string>
+</dict>
+</plist>
