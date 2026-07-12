@@ -172,3 +172,15 @@ TEST_CASE("ewm_mean_no_adjust matches pandas' adjust=False recursive EMA", "[ind
   CHECK(e[1] == Approx(98.42415909));
   CHECK(e[19] == Approx(101.29061503));
 }
+
+// python3: pd.Series(x).rolling(5).min() on a 10-bar slice.
+TEST_CASE("rolling_min matches pandas' rolling min", "[indicators]") {
+  std::vector<double> x = {98.43964789, 98.40867029, 97.78774186, 96.32316138, 97.73510750,
+                            97.25837536, 96.47790614, 97.54817388, 96.26588128, 94.93840238};
+  auto m = rolling_min(x, 5);
+  for (int i = 0; i < 4; ++i) CHECK(std::isnan(m[i]));
+  CHECK(m[4] == Approx(96.32316138));
+  CHECK(m[5] == Approx(96.32316138));
+  CHECK(m[8] == Approx(96.26588128));
+  CHECK(m[9] == Approx(94.93840238));
+}

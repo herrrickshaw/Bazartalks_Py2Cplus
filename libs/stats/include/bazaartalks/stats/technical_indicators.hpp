@@ -39,6 +39,10 @@ std::vector<double> rolling_mean(const std::vector<double>& x, std::size_t windo
 // window (used by momentum_score()'s 52-week-high proximity check).
 std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window);
 
+// Same min_periods=window convention, the min over the window (used by
+// the Donchian channel's lower band in the momentum-breakout strategy).
+std::vector<double> rolling_min(const std::vector<double>& x, std::size_t window);
+
 // pandas Series.rolling(window).std() -- SAMPLE std (ddof=1, pandas'
 // default), same min_periods=window all-or-nothing NaN convention as
 // rolling_mean/rolling_max.

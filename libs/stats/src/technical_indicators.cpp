@@ -52,6 +52,24 @@ std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window
   return out;
 }
 
+std::vector<double> rolling_min(const std::vector<double>& x, std::size_t window) {
+  std::vector<double> out(x.size(), kNaN);
+  if (window == 0 || window > x.size()) return out;
+  for (std::size_t i = window - 1; i < x.size(); ++i) {
+    double m = x[i + 1 - window];
+    bool any_nan = std::isnan(m);
+    for (std::size_t j = i + 2 - window; j <= i; ++j) {
+      if (std::isnan(x[j])) {
+        any_nan = true;
+      } else if (!any_nan && x[j] < m) {
+        m = x[j];
+      }
+    }
+    out[i] = any_nan ? kNaN : m;
+  }
+  return out;
+}
+
 std::vector<double> rolling_std(const std::vector<double>& x, std::size_t window) {
   std::vector<double> out(x.size(), kNaN);
   if (window < 2 || window > x.size()) return out;
