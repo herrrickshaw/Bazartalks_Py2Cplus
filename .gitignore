@@ -1,5 +1,7 @@
 build/
 logs/
+.env
+.env.local
 vcpkg/
 vcpkg_installed/
 .cache/
