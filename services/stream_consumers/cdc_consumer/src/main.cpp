@@ -20,10 +20,18 @@ double now_seconds() { return static_cast<double>(std::time(nullptr)); }
 
 int main(int argc, char** argv) {
   double window_seconds = 30.0;
+  // Same default group id as kafka_cdc_consumer.py's hardcoded
+  // "kafka-cdc-consumer" -- override via --group-id when running this
+  // alongside the Python original on the SAME topic (e.g. for a parallel-
+  // run burn-in), since two consumers sharing one group would split
+  // partitions between them instead of each seeing every message.
+  std::string group_id = "kafka-cdc-consumer";
   for (int i = 1; i < argc; ++i) {
     std::string arg = argv[i];
     if (arg == "--window" && i + 1 < argc) {
       window_seconds = std::stod(argv[++i]);
+    } else if (arg == "--group-id" && i + 1 < argc) {
+      group_id = argv[++i];
     }
   }
 
@@ -31,7 +39,7 @@ int main(int argc, char** argv) {
   std::string bootstrap = bootstrap_env ? bootstrap_env : "localhost:9092";
   const std::string topic = "ohlc.cdc";
 
-  KafkaConsumer consumer(bootstrap, "kafka-cdc-consumer");
+  KafkaConsumer consumer(bootstrap, group_id);
   consumer.subscribe({topic});
 
   CdcWindowAggregator agg(window_seconds, now_seconds());
