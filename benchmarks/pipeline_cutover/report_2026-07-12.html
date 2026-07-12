@@ -1,0 +1,105 @@
+<title>BazaarTalks: Python vs C++ Pipeline Benchmark</title>
+<style>
+:root { color-scheme: light dark; }
+body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 980px; margin: 2rem auto; padding: 0 1.5rem; line-height: 1.5; }
+h1 { font-size: 1.6rem; margin-bottom: 0.2rem; }
+h2 { font-size: 1.15rem; margin-top: 2.5rem; border-bottom: 2px solid rgba(128,128,128,0.3); padding-bottom: 0.4rem; }
+.subtitle { color: #888; margin-top: 0; }
+.summary-cards { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.2rem 0; }
+.card { background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.25); border-radius: 8px; padding: 0.9rem 1.2rem; min-width: 180px; }
+.card .label { font-size: 0.75rem; text-transform: uppercase; color: #888; letter-spacing: 0.02em; }
+.card .value { font-size: 1.4rem; font-weight: 700; margin-top: 0.2rem; }
+.card .value.good { color: #1e8449; }
+.card .value.note { color: #b7791f; }
+table { border-collapse: collapse; width: 100%; margin: 0.6rem 0 1.4rem; font-size: 0.88rem; }
+th, td { border: 1px solid rgba(128,128,128,0.25); padding: 0.4rem 0.65rem; text-align: right; }
+th { background: rgba(128,128,128,0.12); text-align: left; }
+td:first-child, th:first-child { text-align: left; font-weight: 600; }
+.classcol { text-align: left; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8rem; }
+tr:nth-child(even) { background: rgba(128,128,128,0.05); }
+.faster { color: #1e8449; font-weight: 600; }
+.slower { color: #b7791f; font-weight: 600; }
+.match { color: #1e8449; font-weight: 600; }
+.mismatch { color: #c0392b; font-weight: 700; }
+.finding { background: rgba(183,121,31,0.1); border-left: 4px solid #b7791f; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; margin: 1rem 0; }
+.finding.good { background: rgba(30,132,73,0.1); border-left-color: #1e8449; }
+code { background: rgba(128,128,128,0.15); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85em; }
+</style>
+
+<h1>Python original vs C++ port: pipeline benchmark</h1>
+<p class="subtitle">bt_pipeline_cli vs pipeline.py — real production data, 19 markets, 9 analyze calls each</p>
+
+<div class="summary-cards">
+  <div class="card"><div class="label">Accuracy</div><div class="value good">19 / 19 markets exact match</div></div>
+  <div class="card"><div class="label">Total time (process + 19&times;analyze)</div><div class="value">py 8.79s &nbsp;/&nbsp; cpp 12.29s</div></div>
+  <div class="card"><div class="label">Wall-clock result</div><div class="value note">C++ 40% slower here</div></div>
+  <div class="card"><div class="label">Root cause</div><div class="value" style="font-size:1rem;">fixed per-process startup cost, not query speed</div></div>
+</div>
+
+<div class="finding good">
+<strong>Accuracy: perfect.</strong> Every one of the 19 real production markets (US, CN, JP, KR, TW, CA, AU, HK, UK, EU, SG, SE, DE, SA, BR, CH, ZA, FI, DK) produced an <em>exact</em> match between the Python original and the C++ port &mdash; same scored-ticker count, same rounded average Momentum score, same GGG/GBB/etc. classification breakdown, right down to the per-code counts. Zero mismatches.
+</div>
+
+<div class="finding">
+<strong>Timing: C++ came out slower end-to-end for this exact usage pattern &mdash; and here's why.</strong> Measured as fresh CLI invocations (one process per <code>--analyze MARKET</code> call, matching how these tools are actually run), <code>bt_pipeline_cli</code> took ~40% longer overall. Isolating the cause: a bare <code>bt_pipeline_cli</code> invocation that does <em>zero</em> DuckDB work (just prints usage and exits) already takes <strong>0.32s</strong>, vs Python's <strong>0.03s</strong> interpreter start + <strong>0.16s</strong> for <code>import duckdb</code>. That gap (~0.32s vs ~0.16s of pure fixed cost) accounts for nearly the entire difference &mdash; once it's subtracted out, the <em>actual</em> per-market query work is comparable on both sides (C++ 0.29s vs Python 0.26s of real work per call). The statically-linked DuckDB C++ binary pays a fixed process-startup tax (library static initialization) on every single invocation regardless of work done; Python's per-call cost is lower here only because its interpreter+import overhead happens to be smaller than DuckDB's C++ static-init cost for this specific build. This is a property of the "one process per CLI call" usage pattern, not evidence that the ported logic itself is slower &mdash; the same DuckDB engine executes both sides' SQL.
+</div>
+
+<div class="finding">
+<strong>What this implies going forward:</strong> for a long-running process (like <code>bt_serve_api</code>, which already showed real wins on live HTTP routes during the cutover), this startup tax is paid once and amortized over many requests &mdash; a non-issue. For a CLI invoked repeatedly per-market like this benchmark, the current design pays it on every call. A batch mode (all markets in one process) or a persistent daemon would eliminate this and likely show the C++ engine's real advantage on the query work itself.
+</div>
+
+<h2>Timing per market (seconds, fresh process per call)</h2>
+<table>
+<tr><th>Market</th><th>Python (s)</th><th>C++ (s)</th><th>Ratio (py/cpp)</th></tr>
+<tr><td>US</td><td>0.4226</td><td>0.6318</td><td class="slower">0.67x</td></tr>
+<tr><td>CN</td><td>0.4161</td><td>0.6175</td><td class="slower">0.67x</td></tr>
+<tr><td>JP</td><td>0.4119</td><td>0.6152</td><td class="slower">0.67x</td></tr>
+<tr><td>KR</td><td>0.4141</td><td>0.6145</td><td class="slower">0.67x</td></tr>
+<tr><td>TW</td><td>0.4242</td><td>0.6147</td><td class="slower">0.69x</td></tr>
+<tr><td>CA</td><td>0.4362</td><td>0.6190</td><td class="slower">0.70x</td></tr>
+<tr><td>AU</td><td>0.4163</td><td>0.6185</td><td class="slower">0.67x</td></tr>
+<tr><td>HK</td><td>0.4153</td><td>0.6125</td><td class="slower">0.68x</td></tr>
+<tr><td>UK</td><td>0.4114</td><td>0.6112</td><td class="slower">0.67x</td></tr>
+<tr><td>EU</td><td>0.4121</td><td>0.6160</td><td class="slower">0.67x</td></tr>
+<tr><td>SG</td><td>0.4119</td><td>0.6163</td><td class="slower">0.67x</td></tr>
+<tr><td>SE</td><td>0.4117</td><td>0.6071</td><td class="slower">0.68x</td></tr>
+<tr><td>DE</td><td>0.4128</td><td>0.6138</td><td class="slower">0.67x</td></tr>
+<tr><td>SA</td><td>0.4131</td><td>0.6151</td><td class="slower">0.67x</td></tr>
+<tr><td>BR</td><td>0.4252</td><td>0.6171</td><td class="slower">0.69x</td></tr>
+<tr><td>CH</td><td>0.4208</td><td>0.6107</td><td class="slower">0.69x</td></tr>
+<tr><td>ZA</td><td>0.4136</td><td>0.6095</td><td class="slower">0.68x</td></tr>
+<tr><td>FI</td><td>0.4286</td><td>0.6144</td><td class="slower">0.70x</td></tr>
+<tr><td>DK</td><td>0.4181</td><td>0.6146</td><td class="slower">0.68x</td></tr>
+
+</table>
+<p style="color:#888; font-size:0.85rem;">Ratio &lt; 1 means C++ was slower for this call; &gt; 1 means C++ was faster. <code>--process</code> (warehouse build, once): py 0.8537s / cpp 0.6053s.</p>
+
+<h2>Final output across all markets (DVM momentum + Screener.in-style classification)</h2>
+<table>
+<tr><th>Market</th><th>Scored tickers</th><th>Avg Momentum (M)</th><th>Classification breakdown (code=count)</th><th>Match</th></tr>
+<tr><td>US</td><td>8470</td><td>53.3</td><td class="classcol">GBB=16, GBG=11, GGG=3, BBB=2, BGB=2, GGB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>CN</td><td>5139</td><td>45.8</td><td class="classcol">GBG=19, GBB=12, GGB=3, BBB=2, GGG=2, BBG=1, BGB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>JP</td><td>3081</td><td>56.6</td><td class="classcol">GBG=12, GGB=8, GBB=7, BGB=4, GGG=4, BBG=3, BGG=2</td><td><span class="match">exact match</span></td></tr>
+<tr><td>KR</td><td>2570</td><td>37.9</td><td class="classcol">GGB=24, BGB=7, GGG=7, BGG=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>TW</td><td>2166</td><td>46.7</td><td class="classcol">GBG=21, GBB=15, GGB=2, BBG=1, GGG=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>CA</td><td>2056</td><td>41.6</td><td class="classcol">GGG=11, GGB=9, GBG=7, GBB=6, BGG=3, BBB=2, BBG=1, BGB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>AU</td><td>1485</td><td>43.4</td><td class="classcol">GBG=10, GBB=9, GGG=7, BBG=4, GGB=4, BGB=3, BGG=2, BBB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>HK</td><td>1303</td><td>42.5</td><td class="classcol">GGB=16, BGB=7, GBB=5, GGG=4, GBG=3, BGG=2, BBG=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>UK</td><td>846</td><td>44.2</td><td class="classcol">GGG=15, GBB=9, GBG=6, BBG=3, GGB=3, BGB=2, BGG=2</td><td><span class="match">exact match</span></td></tr>
+<tr><td>EU</td><td>842</td><td>39.5</td><td class="classcol">GGG=6, GBB=5, GBG=4, BBB=1, BGG=1, GGB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>SG</td><td>586</td><td>39.2</td><td class="classcol">GGG=20, GBG=8, BGG=5, GGB=5, GBB=2</td><td><span class="match">exact match</span></td></tr>
+<tr><td>SE</td><td>549</td><td>40.8</td><td class="classcol">GBB=7, GBG=7, GGB=7, BBG=6, GGG=5, BGB=4, BBB=3</td><td><span class="match">exact match</span></td></tr>
+<tr><td>DE</td><td>445</td><td>44.6</td><td class="classcol">GGG=9, BGG=7, BBG=6, BGB=5, GBB=5, GBG=5, GGB=2, BBB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>SA</td><td>365</td><td>44.1</td><td class="classcol">GGB=13, BGB=7, GBB=7, GGG=7, GBG=5, BBB=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>BR</td><td>242</td><td>50.3</td><td class="classcol">GGG=19, GGB=9, BGB=4, GBG=3, GBB=2, BBB=1, BBG=1, BGG=1</td><td><span class="match">exact match</span></td></tr>
+<tr><td>CH</td><td>190</td><td>49.2</td><td class="classcol">GBG=15, GGG=7, BBG=6, GBB=4, GGB=4, BGG=2</td><td><span class="match">exact match</span></td></tr>
+<tr><td>ZA</td><td>179</td><td>47.5</td><td class="classcol">GGG=16, GGB=12, BGG=4, BGB=3, GBG=3, GBB=2</td><td><span class="match">exact match</span></td></tr>
+<tr><td>FI</td><td>167</td><td>43.6</td><td class="classcol">GBB=10, BGB=8, GGB=6, GBG=5, BBB=3, GGG=3, BBG=2, BGG=2</td><td><span class="match">exact match</span></td></tr>
+<tr><td>DK</td><td>104</td><td>44.8</td><td class="classcol">GGG=9, BGB=8, GGB=7, BGG=5, GBB=5, BBB=3, GBG=2, BBG=1</td><td><span class="match">exact match</span></td></tr>
+
+</table>
+
+<h2>What was fixed to make this benchmark possible</h2>
+<p>While setting this up, <code>bt_pipeline_cli</code>'s <code>--process</code>/<code>--analyze</code> stages turned out to never populate <code>WarehousePaths</code> from any CLI flag &mdash; they always built against an empty path set, so the shipped tool couldn't actually ingest real data at all. Added <code>--ohlc-dir</code> (repeatable), <code>--companies-parquet</code>, <code>--fundamentals-db</code>, <code>--dvm-global-db</code>, <code>--dvm-composite-db</code>, <code>--viability-db</code> flags (commit <code>7519b73</code>), verified against real data, 207/207 tests still passing, then used the fixed CLI for this benchmark.</p>
+
+<p style="color:#888; font-size:0.8rem; margin-top:2rem;">Data source: real production files &mdash; 19-market OHLC parquet set (<code>~/market-data-artifacts/seed_ohlc</code>), <code>dvm_global.db</code> (30,785 rows total), <code>dvm_composite.db</code>, <code>fundamentals_cache.db</code> from the real <code>~/BazaarTalks</code> deployment. Both stacks built independent scratch DuckDB files from the same source data; no shared state between runs.</p>

@@ -36,6 +36,8 @@ libs/quant_core/   Phase 3-6 -- risk/cost/universe/factor/dvm/backtest modules
 services/          Phase 7-9 -- stream consumers, serve_api, pipeline_cli
 tests/             golden/unit/parity test fixtures and adversarial security suites
 python-sidecar/    permanent Python acquisition + ML-training service (never ported)
+benchmarks/        cutover benchmark drivers + rendered reports (see docs/MIGRATION_PLAN.md)
+ops/               burn-in log rotation/backup scripts (launchd-driven, see plists at repo root)
 ```
 
 Every C++ module here is validated against golden fixtures generated from
