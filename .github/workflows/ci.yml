@@ -23,6 +23,21 @@ jobs:
           # libs/storage/cassandra_client/CMakeLists.txt's own comment) --
           # it's a system dependency installed via Homebrew, same as bison.
 
+      - name: Start Kafka + Cassandra for the integration tests
+        run: |
+          # macos-14 runners can't use GitHub Actions' `services:` block
+          # (service containers require a Linux/Docker host) -- the
+          # [kafka]/[cassandra]-tagged integration tests
+          # (libs/streaming/kafka_client, libs/storage/cassandra_client,
+          # services/stream_consumers/*) need real local brokers, so start
+          # them via `brew services` instead, same as this repo's dev
+          # environment. Kicked off now, in parallel with the vcpkg
+          # install/build below, so they've had time to warm up by the
+          # time the Test step needs them.
+          brew install kafka cassandra
+          brew services start kafka
+          brew services start cassandra
+
       - name: Cache vcpkg
         uses: actions/cache@v4
         with:
@@ -43,6 +58,32 @@ jobs:
 
       - name: Build
         run: cmake --build --preset ci-build
+
+      - name: Wait for Kafka + Cassandra
+        run: |
+          echo "Waiting for Kafka on :9092..."
+          for i in $(seq 1 30); do
+            nc -z localhost 9092 && { echo "Kafka is up"; break; }
+            sleep 2
+          done
+          nc -z localhost 9092 || { echo "Kafka never came up"; exit 1; }
+
+          echo "Waiting for Cassandra on :9042..."
+          for i in $(seq 1 60); do
+            nc -z localhost 9042 && { echo "Cassandra port is open"; break; }
+            sleep 2
+          done
+          nc -z localhost 9042 || { echo "Cassandra never came up"; exit 1; }
+
+          # The CQL port opens before the node has finished initializing
+          # (system keyspaces, gossip) -- cqlsh succeeding is the real
+          # readiness signal MarketStore's own tests depend on.
+          echo "Waiting for Cassandra to accept CQL queries..."
+          for i in $(seq 1 60); do
+            "$(brew --prefix cassandra)/bin/cqlsh" -e "describe cluster" >/dev/null 2>&1 && { echo "Cassandra is ready"; break; }
+            sleep 2
+          done
+          "$(brew --prefix cassandra)/bin/cqlsh" -e "describe cluster" >/dev/null 2>&1 || { echo "Cassandra never became query-ready"; exit 1; }
 
       - name: Test
         run: ctest --preset ci-test
