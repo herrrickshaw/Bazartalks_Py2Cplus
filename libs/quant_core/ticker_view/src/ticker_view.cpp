@@ -3,6 +3,7 @@
 #include "bazaartalks/quant_core/charts.hpp"
 
 #include <cmath>
+#include <limits>
 #include <set>
 
 namespace bazaartalks::quant_core {
@@ -46,6 +47,20 @@ std::string card(const std::string& label, const std::optional<std::string>& val
   }
   return "<div class=\"card\"><div class=\"label\">" + label + "</div><div class=\"value\">" +
         *value + "</div></div>";
+}
+
+// This module's contract documents that callers supply pre-stringified
+// values matching Python's str() output for that field's actual type --
+// a well-formed caller never triggers std::stod()'s throw path. This is
+// still a defensive fallback (NaN, not a crash) against a malformed
+// caller, since a serving layer should degrade a bad upstream value into
+// a visibly wrong-looking page rather than take the whole request down.
+double safe_stod(const std::string& s) {
+  try {
+    return std::stod(s);
+  } catch (...) {
+    return std::numeric_limits<double>::quiet_NaN();
+  }
 }
 
 double round2(double x) { return std::round(x * 100.0) / 100.0; }
@@ -95,7 +110,7 @@ std::string render_ticker_view_html(const std::string& ticker, const std::string
     // preserves int-ness, so a present-but-fieldless row renders the bare
     // int "0" here, NOT the float-style "0.0" a real cmf value would get.
     html += card("Accumulation (CMF)",
-                cmf.has_value() ? format_round2(std::stod(*cmf)) : std::string("0"));
+                cmf.has_value() ? format_round2(safe_stod(*cmf)) : std::string("0"));
   }
   html += card("ROE %", find(fund, "roe"));
   html += card("P/E", find(fund, "pe"));
@@ -110,7 +125,7 @@ std::string render_ticker_view_html(const std::string& ticker, const std::string
       auto date_str = find(*it, "Date");
       dates.push_back(date_str.has_value() ? date_str->substr(0, 10) : "");
       auto close_str = find(*it, "Close");
-      closes.push_back(close_str.has_value() ? std::stod(*close_str) : 0.0);
+      closes.push_back(close_str.has_value() ? safe_stod(*close_str) : 0.0);
     }
     html += line_chart(dates, closes, 600, 160,
                        ticker + " close, last " + std::to_string(closes.size()) + " bars");
@@ -121,9 +136,9 @@ std::string render_ticker_view_html(const std::string& ticker, const std::string
   auto composite_val = find(comp, "composite");
   if (m_val.has_value() || composite_val.has_value()) {
     html += "<div style='display:flex;gap:1rem;flex-wrap:wrap'>";
-    if (m_val.has_value()) html += gauge(std::stod(*m_val), 0, 100, "Momentum (M)");
+    if (m_val.has_value()) html += gauge(safe_stod(*m_val), 0, 100, "Momentum (M)");
     if (composite_val.has_value()) {
-      html += gauge(std::stod(*composite_val), 0, 100, "DVM composite score");
+      html += gauge(safe_stod(*composite_val), 0, 100, "DVM composite score");
     }
     html += "</div>";
   }

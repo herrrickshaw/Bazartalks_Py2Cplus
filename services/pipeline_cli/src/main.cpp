@@ -148,8 +148,19 @@ bool stage_analyze(const std::string& market) {
                            market + "'");
     std::cout << "  [analyze] DVM momentum (" << market << "):" << std::endl;
     for (auto& row : *result) {
-      std::cout << "    scored=" << row.GetValue<int64_t>(0)
-                << " avg_M=" << row.GetValue<std::string>(1) << std::endl;
+      // avg_M is a DOUBLE (round(avg(M),1)) -- GetValue<std::string>() then
+      // printing that string would round-trip through DuckDB's reduced-
+      // precision string conversion for no reason (the value's already
+      // rounded by the query itself, so it happens not to visibly truncate
+      // here, but it's the same unsafe pattern the Phase 9 cutover found
+      // silently discarding real precision in serve_api's routes -- fixed
+      // for consistency, not because this specific spot was observed to
+      // misbehave). AVG() over zero matching rows is NULL, not 0 -- print
+      // that explicitly rather than crashing on GetValue<double>() of a
+      // NULL value.
+      std::cout << "    scored=" << row.GetValue<int64_t>(0) << " avg_M="
+                << (row.IsNull(1) ? std::string("NULL") : std::to_string(row.GetValue<double>(1)))
+                << std::endl;
     }
   } else {
     std::cout << "  [analyze] dvm_global not built locally -- skipping momentum summary"

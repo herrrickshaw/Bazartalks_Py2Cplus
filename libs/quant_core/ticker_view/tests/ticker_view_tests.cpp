@@ -137,3 +137,26 @@ TEST_CASE("render_ticker_view_html shows placeholders when fundamentals/DVM/OHLC
   // No "M"/"composite" -> no gauge block at all.
   CHECK(html.find("<svg") == std::string::npos);
 }
+
+TEST_CASE("render_ticker_view_html degrades gracefully, not a crash, on a malformed "
+          "numeric field from an upstream caller",
+          "[ticker_view]") {
+  // This module's contract documents that callers supply pre-stringified
+  // values matching Python's str() output for that field's actual type --
+  // a well-formed caller never hits this path. This test locks in the
+  // defensive fallback (a NaN-driven but still-rendered page) against a
+  // malformed caller instead, since a serving layer degrading one bad
+  // upstream value is preferable to an uncaught std::invalid_argument
+  // taking the whole request down.
+  TickerDetailView detail;
+  detail.dvm_technical = {{"M", "not-a-number"}};
+  detail.dvm_composite = {{"composite", "also-not-a-number"}};
+  detail.ohlc = {{{"Date", "2026-07-12"}, {"Close", "garbage"}}};
+
+  std::string html;
+  CHECK_NOTHROW(html = render_ticker_view_html("XYZ", "US", detail, std::nullopt, "now"));
+  CHECK(!html.empty());
+  // The scorecard still shows the raw (malformed) string as-is -- card()
+  // only checks presence, not parseability.
+  CHECK(html.find("<div class=\"value\">not-a-number</div>") != std::string::npos);
+}
