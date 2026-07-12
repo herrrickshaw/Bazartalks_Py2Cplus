@@ -23,6 +23,16 @@ cmake --build --preset debug
 ctest --preset debug
 ```
 
+**For anything timing-sensitive (benchmarks, production deployment), use
+`--preset release` instead of `debug`.** The `debug` preset (`-O0`, full
+debug symbols) produces a large unstripped binary whose fixed per-process
+startup cost alone was measured at ~0.28s — enough to make a properly-ported
+C++ CLI look slower than the Python original purely from binary size/link
+overhead, not engine speed. `release` (`CMAKE_BUILD_TYPE=Release`) drops that
+to ~0.01s; see `docs/MIGRATION_PLAN.md`'s Cutover run #4 correction for the
+full before/after benchmark. `ci-build` (`RelWithDebInfo`) is an equally fast
+alternative when debug symbols are still wanted.
+
 ## Layout
 
 ```

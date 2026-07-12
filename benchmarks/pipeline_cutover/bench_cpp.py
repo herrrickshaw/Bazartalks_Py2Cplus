@@ -8,11 +8,23 @@ measurement) so the two numbers are directly comparable.
 Usage: python3 bench_cpp.py [workdir]
 
 Env vars (all optional, default to this machine's real deployment layout):
-  BAZAARTALKS_CPP_BIN    path to the built bt_pipeline_cli binary
+  BAZAARTALKS_CPP_BIN    path to the built bt_pipeline_cli binary (defaults to
+                         the `release` preset's output -- see the IMPORTANT
+                         note below before pointing this at a debug build)
   BAZAARTALKS_REPO       path to the BazaarTalks checkout (has the *.db files
                          and cache_seed_local/)
   BAZAARTALKS_OHLC_SEED  real OHLC parquet dir (see bench_python_runner.py's
                          docstring for why the production default can go stale)
+
+IMPORTANT: build with `cmake --build --preset release` (or `ci-build`)
+before running this, NOT `--preset debug`. The first version of this
+benchmark (see docs/MIGRATION_PLAN.md's Cutover run #4) accidentally
+compared Python against a DEBUG build of bt_pipeline_cli and concluded C++
+was ~40% slower -- a bare debug-build invocation with zero DuckDB work
+already takes ~0.28s (huge unstripped/unoptimized binary), vs ~0.01s for a
+release build. Rerunning against `release` flips the result: C++ comes out
+~6x faster with identical (0-mismatch) accuracy. Debug builds are for
+development iteration only; never use one for a timing comparison.
 """
 import json
 import os
@@ -29,7 +41,7 @@ os.makedirs(WORKDIR, exist_ok=True)
 REPO = os.environ.get("BAZAARTALKS_REPO", os.path.expanduser("~/BazaarTalks"))
 BIN = os.environ.get(
     "BAZAARTALKS_CPP_BIN",
-    os.path.join(HERE, "..", "..", "build", "debug", "services", "pipeline_cli", "bt_pipeline_cli"),
+    os.path.join(HERE, "..", "..", "build", "release", "services", "pipeline_cli", "bt_pipeline_cli"),
 )
 OHLC_SEED = os.environ.get("BAZAARTALKS_OHLC_SEED", os.path.expanduser("~/market-data-artifacts/seed_ohlc"))
 DUCKDB = os.path.join(WORKDIR, "cpp_bench.duckdb")
