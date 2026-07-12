@@ -37,7 +37,14 @@ std::vector<double> rolling_mean(const std::vector<double>& x, std::size_t windo
 
 // Same min_periods=window convention as rolling_mean, but the max over the
 // window (used by momentum_score()'s 52-week-high proximity check).
-std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window);
+// `min_periods` (0 = default to `window`, matching pandas' own default)
+// lets a caller replicate pandas' `rolling(window, min_periods=k)` for
+// k < window, e.g. dvm_global.py's `rolling(252, min_periods=150)`
+// 52-week-high calc -- unlike the all-or-nothing default, a window with
+// at least `min_periods` non-NaN values (not necessarily contiguous from
+// the window start) produces a max over whichever values are present.
+std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window,
+                                std::size_t min_periods = 0);
 
 // Same min_periods=window convention, the min over the window (used by
 // the Donchian channel's lower band in the momentum-breakout strategy).
@@ -109,6 +116,18 @@ std::vector<double> chaikin_ad(const std::vector<double>& high, const std::vecto
 double chaikin_money_flow(const std::vector<double>& high, const std::vector<double>& low,
                            const std::vector<double>& close, const std::vector<double>& volume,
                            std::optional<std::size_t> period = std::nullopt);
+
+// Money Flow Index (dvm_global.py's `process_market()`): a volume-
+// weighted RSI over the typical price (H+L+C)/3. Positive/negative money
+// flow are rolling(14) sums of (typical_price * volume) on up/down
+// typical-price days respectively, via pandas' `.where(cond, 0.0)` (NOT a
+// boolean-mask assignment -- a NaN comparison at the first bar is False,
+// so it falls to the 0.0 substitute in both sums, not a double-count); a
+// rolling-negative-sum of exactly 0 maps to NaN (`.replace(0, np.nan)`),
+// same zero-guard convention as rsi()'s average-loss guard.
+std::vector<double> mfi(const std::vector<double>& high, const std::vector<double>& low,
+                        const std::vector<double>& close, const std::vector<double>& volume,
+                        std::size_t window = 14);
 
 // Port of darvas_volume.py's up_down_volume_ratio(). Edge cases replicated
 // exactly: down-volume of 0 with positive up-volume -> +infinity; both 0

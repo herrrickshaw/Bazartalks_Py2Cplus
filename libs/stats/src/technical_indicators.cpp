@@ -34,20 +34,24 @@ std::vector<double> rolling_mean(const std::vector<double>& x, std::size_t windo
   return out;
 }
 
-std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window) {
-  std::vector<double> out(x.size(), kNaN);
-  if (window == 0 || window > x.size()) return out;
-  for (std::size_t i = window - 1; i < x.size(); ++i) {
-    double m = x[i + 1 - window];
-    bool any_nan = std::isnan(m);
-    for (std::size_t j = i + 2 - window; j <= i; ++j) {
-      if (std::isnan(x[j])) {
-        any_nan = true;
-      } else if (!any_nan && x[j] > m) {
-        m = x[j];
+std::vector<double> rolling_max(const std::vector<double>& x, std::size_t window,
+                                std::size_t min_periods) {
+  std::size_t n = x.size();
+  std::vector<double> out(n, kNaN);
+  if (window == 0) return out;
+  std::size_t required = min_periods == 0 ? window : min_periods;
+
+  for (std::size_t i = 0; i < n; ++i) {
+    std::size_t start = i + 1 >= window ? i + 1 - window : 0;
+    double m = kNaN;
+    std::size_t count = 0;
+    for (std::size_t j = start; j <= i; ++j) {
+      if (std::isfinite(x[j])) {
+        if (count == 0 || x[j] > m) m = x[j];
+        ++count;
       }
     }
-    out[i] = any_nan ? kNaN : m;
+    out[i] = count >= required ? m : kNaN;
   }
   return out;
 }
@@ -230,6 +234,44 @@ double up_down_volume_ratio(const std::vector<double>& close, const std::vector<
   }
   if (down > 0.0) return up / down;
   return up > 0.0 ? kInf : kNaN;
+}
+
+std::vector<double> mfi(const std::vector<double>& high, const std::vector<double>& low,
+                        const std::vector<double>& close, const std::vector<double>& volume,
+                        std::size_t window) {
+  std::size_t n = close.size();
+  std::vector<double> tp(n), rmf(n);
+  for (std::size_t i = 0; i < n; ++i) {
+    tp[i] = (high[i] + low[i] + close[i]) / 3.0;
+    rmf[i] = tp[i] * volume[i];
+  }
+  std::vector<double> tpd = diff_pandas(tp);  // tpd[0] = NaN
+
+  std::vector<double> pos(n), neg(n);
+  for (std::size_t i = 0; i < n; ++i) {
+    // dvm_global.py's process_market()/_tech() use `rmf.where(tpd > 0, 0.0)`
+    // (and the `< 0` mirror for neg) -- pandas' `.where(cond, other)` keeps
+    // the original value where cond is True and substitutes `other`
+    // otherwise. A NaN comparison (i=0, where tpd is undefined) is False,
+    // so both pos[0] and neg[0] fall through to the 0.0 substitute -- same
+    // "neither up nor down" treatment as any other non-matching day.
+    pos[i] = tpd[i] > 0.0 ? rmf[i] : 0.0;
+    neg[i] = tpd[i] < 0.0 ? rmf[i] : 0.0;
+  }
+  // rolling(window).sum() == rolling_mean(...) * window, since rolling_mean's
+  // all-or-nothing NaN convention matches pandas' default min_periods=window
+  // and pos/neg themselves never contain NaN (real 0.0 fallback above).
+  std::vector<double> pos_sum = rolling_mean(pos, window);
+  std::vector<double> neg_sum = rolling_mean(neg, window);
+
+  std::vector<double> out(n);
+  for (std::size_t i = 0; i < n; ++i) {
+    double ps = pos_sum[i] * static_cast<double>(window);
+    double ns = neg_sum[i] * static_cast<double>(window);
+    double ns_adj = ns == 0.0 ? kNaN : ns;  // `.replace(0, np.nan)`
+    out[i] = 100.0 - 100.0 / (1.0 + ps / ns_adj);
+  }
+  return out;
 }
 
 }  // namespace bazaartalks::stats
