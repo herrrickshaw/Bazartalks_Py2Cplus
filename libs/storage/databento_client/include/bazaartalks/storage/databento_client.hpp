@@ -4,10 +4,15 @@
 // in this platform). See docs/MIGRATION_PLAN.md's Databento integration
 // section for the full scoping rationale.
 //
-// MVP scope: historical OHLCV-1m and TBBO bars for US equities, stored into
-// a dedicated SQLite db via the existing bt_sqlite_client. Deferred: full
-// order-book (MBP-10/MBO), OPRA options, live streaming, and wiring into
-// bt_serve_api/bt_pipeline_cli's DuckDB views.
+// MVP scope: historical OHLCV-1m, OHLCV-1d, and TBBO bars for US equities,
+// stored into a dedicated SQLite db via the existing bt_sqlite_client.
+// OHLCV-1d added alongside 1m/TBBO specifically because it's dramatically
+// cheaper (real Databento pricing: ~$1.40/symbol for 3.3 years of 1-minute
+// bars vs. a small fraction of that for daily bars over the same window)
+// and directly comparable to the rest of this platform's daily-OHLC-based
+// scanners, unlike minute/tick granularity which nothing else here consumes
+// yet. Deferred: full order-book (MBP-10/MBO), OPRA options, live
+// streaming, and wiring into bt_serve_api/bt_pipeline_cli's DuckDB views.
 //
 // This is a PAID, METERED API -- unlike every other data source in this
 // repo, a mistake here costs real money. Every fetch_and_store() call:
@@ -40,7 +45,7 @@
 
 namespace bazaartalks::storage {
 
-enum class DatabentoSchema { Ohlcv1M, Tbbo };
+enum class DatabentoSchema { Ohlcv1M, Ohlcv1D, Tbbo };
 
 std::string to_string(DatabentoSchema schema);
 

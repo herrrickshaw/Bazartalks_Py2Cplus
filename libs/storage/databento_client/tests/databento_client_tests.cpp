@@ -80,6 +80,7 @@ TEST_CASE("DatabentoClient creates its schema idempotently and coverage() is nul
 
   DatabentoClient client(path, /*cost_threshold_usd=*/1.0);
   CHECK_FALSE(client.coverage("AAPL", DatabentoSchema::Ohlcv1M).has_value());
+  CHECK_FALSE(client.coverage("AAPL", DatabentoSchema::Ohlcv1D).has_value());
   CHECK_FALSE(client.coverage("AAPL", DatabentoSchema::Tbbo).has_value());
 
   // Constructing a second client against the same file must not throw
@@ -93,5 +94,6 @@ TEST_CASE("DatabentoClient creates its schema idempotently and coverage() is nul
 TEST_CASE("to_string(DatabentoSchema) matches the table names used internally",
           "[databento][client]") {
   CHECK(to_string(DatabentoSchema::Ohlcv1M) == "ohlcv_1m");
+  CHECK(to_string(DatabentoSchema::Ohlcv1D) == "ohlcv_1d");
   CHECK(to_string(DatabentoSchema::Tbbo) == "tbbo");
 }

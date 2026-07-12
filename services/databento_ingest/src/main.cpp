@@ -8,6 +8,7 @@
 //   bt_databento_ingest --dataset DBEQ.BASIC --symbol SPY --schema ohlcv1m \
 //     --start 2026-07-01 --end 2026-07-02 --out-db databento_bars.db \
 //     [--cost-threshold 1.0] [--confirm-cost <amount>]
+// --schema accepts ohlcv1m, ohlcv1d, or tbbo.
 //
 // Requires DATABENTO_API_KEY in the environment (databento-cpp itself
 // throws a clear error if it's unset -- not re-checked here).
@@ -25,13 +26,14 @@ namespace {
 
 void print_usage() {
   std::cout << "usage: bt_databento_ingest --dataset DATASET --symbol SYMBOL "
-               "--schema ohlcv1m|tbbo --start YYYY-MM-DD --end YYYY-MM-DD "
+               "--schema ohlcv1m|ohlcv1d|tbbo --start YYYY-MM-DD --end YYYY-MM-DD "
                "--out-db PATH [--cost-threshold USD] [--confirm-cost USD]"
             << std::endl;
 }
 
 std::optional<DatabentoSchema> parse_schema(const std::string& s) {
   if (s == "ohlcv1m") return DatabentoSchema::Ohlcv1M;
+  if (s == "ohlcv1d") return DatabentoSchema::Ohlcv1D;
   if (s == "tbbo") return DatabentoSchema::Tbbo;
   return std::nullopt;
 }
@@ -77,7 +79,7 @@ int main(int argc, char** argv) {
   auto schema = parse_schema(schema_arg);
   if (!schema) {
     std::cerr << "  [databento_ingest] unknown --schema '" << schema_arg
-              << "' (expected ohlcv1m or tbbo)" << std::endl;
+              << "' (expected ohlcv1m, ohlcv1d, or tbbo)" << std::endl;
     return 1;
   }
 

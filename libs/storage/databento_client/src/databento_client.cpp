@@ -27,6 +27,19 @@ constexpr const char* kCreateOhlcv1M =
 constexpr const char* kIndexOhlcv1M =
     "CREATE INDEX IF NOT EXISTS ix_ohlcv_1m_symbol_date ON ohlcv_1m(symbol, date)";
 
+// Same shape as ohlcv_1m -- OhlcvMsg (the decoded record type) is identical
+// for both schemas, only the vendor Schema enum value and table differ.
+constexpr const char* kCreateOhlcv1D =
+    "CREATE TABLE IF NOT EXISTS ohlcv_1d ("
+    "  symbol TEXT NOT NULL,"
+    "  ts_event_ns INTEGER NOT NULL,"
+    "  date TEXT NOT NULL,"
+    "  open REAL, high REAL, low REAL, close REAL, volume INTEGER,"
+    "  PRIMARY KEY (symbol, ts_event_ns)"
+    ")";
+constexpr const char* kIndexOhlcv1D =
+    "CREATE INDEX IF NOT EXISTS ix_ohlcv_1d_symbol_date ON ohlcv_1d(symbol, date)";
+
 constexpr const char* kCreateTbbo =
     "CREATE TABLE IF NOT EXISTS tbbo ("
     "  symbol TEXT NOT NULL,"
@@ -51,11 +64,31 @@ constexpr const char* kCreateSpendLedger =
     ")";
 
 std::string table_for(DatabentoSchema schema) {
-  return schema == DatabentoSchema::Ohlcv1M ? "ohlcv_1m" : "tbbo";
+  switch (schema) {
+    case DatabentoSchema::Ohlcv1M:
+      return "ohlcv_1m";
+    case DatabentoSchema::Ohlcv1D:
+      return "ohlcv_1d";
+    case DatabentoSchema::Tbbo:
+      return "tbbo";
+  }
+  throw std::invalid_argument("unknown DatabentoSchema");
 }
 
 db::Schema vendor_schema_for(DatabentoSchema schema) {
-  return schema == DatabentoSchema::Ohlcv1M ? db::Schema::Ohlcv1M : db::Schema::Tbbo;
+  switch (schema) {
+    case DatabentoSchema::Ohlcv1M:
+      return db::Schema::Ohlcv1M;
+    case DatabentoSchema::Ohlcv1D:
+      return db::Schema::Ohlcv1D;
+    case DatabentoSchema::Tbbo:
+      return db::Schema::Tbbo;
+  }
+  throw std::invalid_argument("unknown DatabentoSchema");
+}
+
+bool is_ohlcv(DatabentoSchema schema) {
+  return schema == DatabentoSchema::Ohlcv1M || schema == DatabentoSchema::Ohlcv1D;
 }
 
 double from_fixed_price(std::int64_t fixed) {
@@ -135,6 +168,8 @@ struct DatabentoClient::Impl {
       : db(path), cost_threshold_usd(threshold) {
     db.execute(kCreateOhlcv1M);
     db.execute(kIndexOhlcv1M);
+    db.execute(kCreateOhlcv1D);
+    db.execute(kIndexOhlcv1D);
     db.execute(kCreateTbbo);
     db.execute(kIndexTbbo);
     db.execute(kCreateSpendLedger);
@@ -214,9 +249,10 @@ std::size_t DatabentoClient::fetch_and_store(const std::string& dataset,
                                         vendor_schema_for(schema));
 
   std::size_t written = 0;
-  if (schema == DatabentoSchema::Ohlcv1M) {
+  if (is_ohlcv(schema)) {
     auto stmt = impl_->db.prepare(
-        "INSERT OR IGNORE INTO ohlcv_1m(symbol, ts_event_ns, date, open, high, low, close, "
+        "INSERT OR IGNORE INTO " + table_for(schema) +
+        "(symbol, ts_event_ns, date, open, high, low, close, "
         "volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     while (const auto* record = store.NextRecord()) {
       const auto& bar = record->Get<db::OhlcvMsg>();
