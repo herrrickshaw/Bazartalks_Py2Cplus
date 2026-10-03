@@ -1,0 +1,1172 @@
+{
+  "CMakePresets.json": {
+    "mtime": 1783856383.750526,
+    "seen": 1789968622.31283,
+    "ast_hash": "7f609094ebdce78b6716f650f2d1ab96",
+    "semantic_hash": ""
+  },
+  "benchmarks/pipeline_cutover/bench_cpp.py": {
+    "mtime": 1783856383.751111,
+    "seen": 1789193274.661794,
+    "ast_hash": "0ea1cf6d93bf524b287a777b03eba658",
+    "semantic_hash": ""
+  },
+  "benchmarks/pipeline_cutover/bench_python.py": {
+    "mtime": 1783856383.751236,
+    "seen": 1789968622.3128588,
+    "ast_hash": "a160062649d6bc82ab942991ab9ce344",
+    "semantic_hash": ""
+  },
+  "benchmarks/pipeline_cutover/bench_python_runner.py": {
+    "mtime": 1783856383.751359,
+    "seen": 1789968622.312866,
+    "ast_hash": "67ddd0fbe84e69664942bcf3d17dc91c",
+    "semantic_hash": ""
+  },
+  "libs/calendar/include/bazaartalks/calendar/trading_calendar.hpp": {
+    "mtime": 1783856383.75352,
+    "seen": 1789968622.312872,
+    "ast_hash": "fc8a8bd9d64170c5e2ef38affae7382a",
+    "semantic_hash": ""
+  },
+  "libs/calendar/src/trading_calendar.cpp": {
+    "mtime": 1783856383.753737,
+    "seen": 1789968622.3128781,
+    "ast_hash": "82123492699bc8da57e4984f56ff14a2",
+    "semantic_hash": ""
+  },
+  "libs/calendar/tests/trading_calendar_tests.cpp": {
+    "mtime": 1783856383.753925,
+    "seen": 1789193274.661798,
+    "ast_hash": "a411c739abe3a916b9d8bdee69859716",
+    "semantic_hash": ""
+  },
+  "libs/linalg/include/bazaartalks/linalg/regression.hpp": {
+    "mtime": 1783856383.754463,
+    "seen": 1789968622.312892,
+    "ast_hash": "24281013f509b4244e64b4a87286904f",
+    "semantic_hash": ""
+  },
+  "libs/linalg/src/regression.cpp": {
+    "mtime": 1783856383.754671,
+    "seen": 1789968622.312897,
+    "ast_hash": "1e0f723912fa3b9b6c1e272f7e3653e0",
+    "semantic_hash": ""
+  },
+  "libs/linalg/tests/regression_tests.cpp": {
+    "mtime": 1783856383.754916,
+    "seen": 1789968622.312902,
+    "ast_hash": "8354337b5b4055333e0436b7a1712a3b",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/benchmark/include/bazaartalks/quant_core/benchmark.hpp": {
+    "mtime": 1783856383.755604,
+    "seen": 1789968622.312907,
+    "ast_hash": "476a7a967a99cc5f862f1c9a0f562a9c",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/benchmark/src/benchmark.cpp": {
+    "mtime": 1783856383.755797,
+    "seen": 1789968622.312913,
+    "ast_hash": "e4dd12d1f746067f006ea5fc2e1c9a13",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/benchmark/tests/benchmark_tests.cpp": {
+    "mtime": 1783856383.756044,
+    "seen": 1789968622.312918,
+    "ast_hash": "e5a05150b3a94e875696dcec1fed4389",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/charts/include/bazaartalks/quant_core/charts.hpp": {
+    "mtime": 1783856383.756552,
+    "seen": 1789968622.312923,
+    "ast_hash": "1459e5d783ff095092add88a76c79b88",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/charts/src/charts.cpp": {
+    "mtime": 1783856383.756744,
+    "seen": 1789968622.312928,
+    "ast_hash": "6c9a9ab2fe4fad8322f9c1c21fe52bce",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/charts/tests/charts_tests.cpp": {
+    "mtime": 1783856383.756932,
+    "seen": 1789968622.3129332,
+    "ast_hash": "820b04a4225254514046cdc1c7d3e0b9",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/cost_models/include/bazaartalks/quant_core/net_of_cost.hpp": {
+    "mtime": 1783856383.757454,
+    "seen": 1789968622.312938,
+    "ast_hash": "267a662990341b0b4a0a1ddfac288740",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/cost_models/src/net_of_cost.cpp": {
+    "mtime": 1783856383.757677,
+    "seen": 1789968622.3129442,
+    "ast_hash": "c84aeb3f10861bdc51872945eec043b0",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/cost_models/tests/net_of_cost_tests.cpp": {
+    "mtime": 1783856383.757864,
+    "seen": 1789968622.312949,
+    "ast_hash": "43187694fb11a7d4dd0bde75ab455002",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/crowding/include/bazaartalks/quant_core/crowding.hpp": {
+    "mtime": 1783856383.758337,
+    "seen": 1789968622.3129542,
+    "ast_hash": "8316387ad2c37dc44d649427aff47893",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/crowding/src/crowding.cpp": {
+    "mtime": 1783856383.758509,
+    "seen": 1789968622.312959,
+    "ast_hash": "109f011526f6fd7e14cb4017427a69d1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/crowding/tests/crowding_tests.cpp": {
+    "mtime": 1783856383.75869,
+    "seen": 1789968622.312963,
+    "ast_hash": "1f1a088870f554a0a73c7b3791243d40",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/darvas_volume/include/bazaartalks/quant_core/darvas_volume.hpp": {
+    "mtime": 1783856383.759133,
+    "seen": 1789968622.312968,
+    "ast_hash": "11f091345938a738c091307bb415ec37",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/darvas_volume/src/darvas_volume.cpp": {
+    "mtime": 1783856383.759298,
+    "seen": 1789193274.66181,
+    "ast_hash": "c58eea7e781bc0ccb032312a1291612f",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/darvas_volume/tests/darvas_volume_tests.cpp": {
+    "mtime": 1783856383.759464,
+    "seen": 1789968622.31298,
+    "ast_hash": "a721209fbceaf4e95c440c9b4653528f",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_composite/include/bazaartalks/quant_core/dvm_composite.hpp": {
+    "mtime": 1783856383.759941,
+    "seen": 1789968622.3129852,
+    "ast_hash": "b636465db547a6d9acb7e27053b7cb12",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_composite/src/dvm_composite.cpp": {
+    "mtime": 1783856383.760133,
+    "seen": 1789968622.31299,
+    "ast_hash": "d6a4a51c82926a674564d7a2244e796e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_composite/tests/dvm_composite_tests.cpp": {
+    "mtime": 1783856383.760307,
+    "seen": 1789968622.312995,
+    "ast_hash": "e42200d319750bd316e155c72e900cdb",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_engine/include/bazaartalks/quant_core/dvm_engine.hpp": {
+    "mtime": 1783856383.760852,
+    "seen": 1789193274.661813,
+    "ast_hash": "c5fc579acadf6f1ef3f5fdf20f58c622",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_engine/src/dvm_engine.cpp": {
+    "mtime": 1783856383.761098,
+    "seen": 1789968622.3130062,
+    "ast_hash": "694df8e052cc8872f28e49a3c0759389",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_engine/tests/dvm_engine_tests.cpp": {
+    "mtime": 1783856383.761432,
+    "seen": 1789968622.313012,
+    "ast_hash": "9408ef96a41ed81f1b1694914b2c1be2",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_global/include/bazaartalks/quant_core/dvm_global.hpp": {
+    "mtime": 1783856383.762018,
+    "seen": 1789968622.3130171,
+    "ast_hash": "d8be606edf5c2d49169423ac5ea3d54a",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_global/src/dvm_global.cpp": {
+    "mtime": 1783856383.762226,
+    "seen": 1789968622.313023,
+    "ast_hash": "188b398eedb6138171711feba738f0dd",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_global/tests/dvm_global_tests.cpp": {
+    "mtime": 1783856383.762455,
+    "seen": 1789968622.313028,
+    "ast_hash": "6948a00076adc1d28f6285fb65a49bad",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/factor_research/include/bazaartalks/quant_core/factor_research.hpp": {
+    "mtime": 1783856383.762949,
+    "seen": 1789968622.3130329,
+    "ast_hash": "4b56b4512763191d74970c00bc96f127",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/factor_research/src/factor_research.cpp": {
+    "mtime": 1783856383.763264,
+    "seen": 1789968622.313038,
+    "ast_hash": "ebd020128f9f4f4339e419d0517269a1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/factor_research/tests/factor_research_tests.cpp": {
+    "mtime": 1783856383.763429,
+    "seen": 1789968622.3130429,
+    "ast_hash": "ed066ce09c07579d6089c9132daec224",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/fx/include/bazaartalks/quant_core/fx.hpp": {
+    "mtime": 1783856383.763886,
+    "seen": 1789968622.3130481,
+    "ast_hash": "cfa191c37f445533e6169f6e4b59eee2",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/fx/src/fx.cpp": {
+    "mtime": 1783856383.764052,
+    "seen": 1789968622.313053,
+    "ast_hash": "02f41c63ef05f5c9e161af3d258f00dd",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/fx/tests/fx_tests.cpp": {
+    "mtime": 1783856383.764213,
+    "seen": 1789968622.3130581,
+    "ast_hash": "a829209473d102772e0370e3170ed48c",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/hft_selection/include/bazaartalks/quant_core/hft_selection.hpp": {
+    "mtime": 1783856383.764653,
+    "seen": 1789968622.313063,
+    "ast_hash": "93e662cb4301df000fc089d8df57d02e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/hft_selection/src/hft_selection.cpp": {
+    "mtime": 1783856383.76483,
+    "seen": 1789968622.313068,
+    "ast_hash": "6d10464f38de65757b2cd02f89127a25",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/hft_selection/tests/hft_selection_tests.cpp": {
+    "mtime": 1783856383.765027,
+    "seen": 1789968622.313073,
+    "ast_hash": "affd5279ee023b6d49552041f6850a2e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/meta_screen/include/bazaartalks/quant_core/meta_screen.hpp": {
+    "mtime": 1783856383.765482,
+    "seen": 1789968622.313078,
+    "ast_hash": "3667703d3e53874de4f77c18763f823c",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/meta_screen/src/meta_screen.cpp": {
+    "mtime": 1783856383.765633,
+    "seen": 1789968622.313083,
+    "ast_hash": "ade7cff9e2e382585260ab3cfde48b18",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/meta_screen/tests/meta_screen_tests.cpp": {
+    "mtime": 1783856383.765793,
+    "seen": 1789968622.313088,
+    "ast_hash": "0f319dc7d2599dea50cf6513846bbe79",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ml_signal_engine/include/bazaartalks/quant_core/ml_signal_engine.hpp": {
+    "mtime": 1783856383.766266,
+    "seen": 1789193274.661825,
+    "ast_hash": "f30dadca3a25d8364499bf01d8af6779",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ml_signal_engine/src/ml_signal_engine.cpp": {
+    "mtime": 1783856383.766517,
+    "seen": 1789968622.313099,
+    "ast_hash": "8158c491194d673e0bc23e66adc0278f",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ml_signal_engine/tests/compute_features_tests.cpp": {
+    "mtime": 1783856383.766887,
+    "seen": 1789968622.313104,
+    "ast_hash": "8cc5cd77a523bc086474921c73657f2e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ml_signal_engine/tests/ml_signal_engine_unit_tests.cpp": {
+    "mtime": 1783856383.767002,
+    "seen": 1789193274.661827,
+    "ast_hash": "a8bd617829f3e67dbf93afb7c22a286f",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ml_signal_engine/tests/predict_ridge_tests.cpp": {
+    "mtime": 1783856383.767206,
+    "seen": 1789968622.313115,
+    "ast_hash": "46b3fb72a45b1328202dbcd163fb49bb",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/momentum_breakout/include/bazaartalks/quant_core/momentum_breakout.hpp": {
+    "mtime": 1783856383.767742,
+    "seen": 1789968622.31312,
+    "ast_hash": "f5f2a867b69cf4cfc0d2602eb12bd70d",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/momentum_breakout/src/momentum_breakout.cpp": {
+    "mtime": 1783856383.767918,
+    "seen": 1789193274.6618292,
+    "ast_hash": "14a3fc4ce0b5a3325b4bda32dc09c027",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/momentum_breakout/tests/momentum_breakout_tests.cpp": {
+    "mtime": 1783856383.768091,
+    "seen": 1789968622.313131,
+    "ast_hash": "057b05bb0df719190748f7f926dd9305",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_backtest/include/bazaartalks/quant_core/pit_backtest.hpp": {
+    "mtime": 1783856383.768538,
+    "seen": 1789968622.3131368,
+    "ast_hash": "750f68a760ac73d202c966075e720bfc",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_backtest/src/pit_backtest.cpp": {
+    "mtime": 1783856383.768706,
+    "seen": 1789193274.661831,
+    "ast_hash": "45020cfac0cd7fc88dc248f65357c434",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_backtest/tests/pit_backtest_tests.cpp": {
+    "mtime": 1783856383.768895,
+    "seen": 1789968622.313148,
+    "ast_hash": "f62339de9bc3c01c7e4feb824080c307",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_global/include/bazaartalks/quant_core/pit_global.hpp": {
+    "mtime": 1783856383.769325,
+    "seen": 1789968622.313153,
+    "ast_hash": "c690dff2bd44edfdc9102631926fb15c",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_global/src/pit_global.cpp": {
+    "mtime": 1783856383.769483,
+    "seen": 1789193274.661833,
+    "ast_hash": "4a48a3a20627bb2ed66e6aeea9ecb343",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_global/tests/pit_global_tests.cpp": {
+    "mtime": 1783856383.769657,
+    "seen": 1789968622.313164,
+    "ast_hash": "a8acb5789b512381cf3fc2e516c73b77",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/portfolio/include/bazaartalks/quant_core/portfolio.hpp": {
+    "mtime": 1783856383.770122,
+    "seen": 1789968622.313169,
+    "ast_hash": "7d02c23cf80f5a020fbb1b4cda9a4c2a",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/portfolio/src/portfolio.cpp": {
+    "mtime": 1783856383.770259,
+    "seen": 1789968622.313174,
+    "ast_hash": "7439a108199193ac969528d99ffa3d17",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/portfolio/tests/portfolio_tests.cpp": {
+    "mtime": 1783856383.770425,
+    "seen": 1789968622.3131788,
+    "ast_hash": "4467365bff9536e2d16f9ee6ed5421a0",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/quality_factor/include/bazaartalks/quant_core/quality_factor.hpp": {
+    "mtime": 1783856383.770884,
+    "seen": 1789968622.313184,
+    "ast_hash": "a744f4280bd25ba12d2df3ff31413e56",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/quality_factor/src/quality_factor.cpp": {
+    "mtime": 1783856383.771067,
+    "seen": 1789968622.313189,
+    "ast_hash": "c12f9f277aeed56b40a5377d12b55cb0",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/quality_factor/tests/quality_factor_tests.cpp": {
+    "mtime": 1783856383.771295,
+    "seen": 1789968622.313194,
+    "ast_hash": "3c592aacfe50892ab72abb0aba88e9ad",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/query_catalog/include/bazaartalks/quant_core/query_catalog.hpp": {
+    "mtime": 1783856383.771748,
+    "seen": 1789968622.313199,
+    "ast_hash": "011959a60612264175053983bcf8c794",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/query_catalog/src/query_catalog.cpp": {
+    "mtime": 1783856383.771906,
+    "seen": 1789968622.313204,
+    "ast_hash": "0f52c85b5d134ec72aee7e7e8d57e89c",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/query_catalog/tests/query_catalog_tests.cpp": {
+    "mtime": 1783856383.772072,
+    "seen": 1789968622.313209,
+    "ast_hash": "92599e884db902b477b8553d1b1548c3",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/risk/include/bazaartalks/quant_core/risk.hpp": {
+    "mtime": 1783856383.772515,
+    "seen": 1789968622.313215,
+    "ast_hash": "228ec0dc4dbb872b5f3e36633937a8bf",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/risk/src/risk.cpp": {
+    "mtime": 1783856383.772677,
+    "seen": 1789968622.31322,
+    "ast_hash": "816f1d512cc5e9c36244f6d744cbef18",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/risk/tests/risk_tests.cpp": {
+    "mtime": 1783856383.772843,
+    "seen": 1789968622.313225,
+    "ast_hash": "4a00220420c70a8ab423b126f1f79fba",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/screen_viability/include/bazaartalks/quant_core/screen_viability.hpp": {
+    "mtime": 1783856383.773291,
+    "seen": 1789968622.31323,
+    "ast_hash": "d74031b9bb137bfcbbdc17950923a6f8",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/screen_viability/src/screen_viability.cpp": {
+    "mtime": 1783856383.773465,
+    "seen": 1789193274.661843,
+    "ast_hash": "fbee6d6a8e8f8958d0a40b3b0126b460",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/screen_viability/tests/screen_viability_tests.cpp": {
+    "mtime": 1783856383.773642,
+    "seen": 1789968622.31324,
+    "ast_hash": "acad60b947f0a001f453e3bf25d273c1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ticker_view/include/bazaartalks/quant_core/ticker_view.hpp": {
+    "mtime": 1783856383.774078,
+    "seen": 1789968622.3132448,
+    "ast_hash": "ca28962bcaaa96211e2940ea61d52a02",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ticker_view/src/ticker_view.cpp": {
+    "mtime": 1783856383.774255,
+    "seen": 1789968622.31325,
+    "ast_hash": "46d2fd75600c026535e38da11840543d",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ticker_view/tests/ticker_view_tests.cpp": {
+    "mtime": 1783856383.774484,
+    "seen": 1789968622.313256,
+    "ast_hash": "fd568af4de01bff419269286bb2a13b3",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/turbulence_index/include/bazaartalks/quant_core/turbulence_index.hpp": {
+    "mtime": 1783856383.774943,
+    "seen": 1789968622.313261,
+    "ast_hash": "138b6f001b2fca78b5baa113390c1d9b",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/turbulence_index/src/turbulence_index.cpp": {
+    "mtime": 1783856383.775114,
+    "seen": 1789968622.313266,
+    "ast_hash": "223da65723cd65f972b0a497855320c1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/turbulence_index/tests/turbulence_index_tests.cpp": {
+    "mtime": 1783856383.775315,
+    "seen": 1789968622.313271,
+    "ast_hash": "0b30e880ecc65cb8e0ee55173c7888e5",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/include/bazaartalks/quant_core/pit_panel.hpp": {
+    "mtime": 1783856383.775902,
+    "seen": 1789968622.3132758,
+    "ast_hash": "61bb983aec3f1ea8d874360a3a6199f3",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/include/bazaartalks/quant_core/survivorship.hpp": {
+    "mtime": 1783856383.776007,
+    "seen": 1789968622.313281,
+    "ast_hash": "f6a615bf984347f97fdd385fd16c1b7c",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/src/pit_panel.cpp": {
+    "mtime": 1783856383.776141,
+    "seen": 1789968622.3132858,
+    "ast_hash": "b6d9227d7fb0ab3de67a8cbb085ec52b",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/src/survivorship.cpp": {
+    "mtime": 1783856383.776221,
+    "seen": 1789193274.661851,
+    "ast_hash": "80c1791d893626e9979d45850addde88",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/tests/pit_panel_tests.cpp": {
+    "mtime": 1783856383.776352,
+    "seen": 1789968622.3132968,
+    "ast_hash": "039bceb6c2059be4a4acc306515e1673",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/tests/survivorship_tests.cpp": {
+    "mtime": 1783856383.776446,
+    "seen": 1789193274.6618528,
+    "ast_hash": "945c0acef656070256f103eb6a34ea1f",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/unlisted_valuation/include/bazaartalks/quant_core/unlisted_valuation.hpp": {
+    "mtime": 1783856383.776807,
+    "seen": 1789968622.313308,
+    "ast_hash": "2d063bed5c4762f168c46d1eb172248a",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/unlisted_valuation/src/unlisted_valuation.cpp": {
+    "mtime": 1783856383.776943,
+    "seen": 1789193274.661854,
+    "ast_hash": "0127def02d00ef24f3f8ee663ad92b40",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/unlisted_valuation/tests/unlisted_valuation_tests.cpp": {
+    "mtime": 1783856383.777072,
+    "seen": 1789968622.313319,
+    "ast_hash": "fae0bc4900edfe8fcca53caac52358d8",
+    "semantic_hash": ""
+  },
+  "libs/stats/include/bazaartalks/stats/cross_sectional.hpp": {
+    "mtime": 1783856383.777429,
+    "seen": 1789968622.313323,
+    "ast_hash": "4d324e124fa4830ec847c1152460625e",
+    "semantic_hash": ""
+  },
+  "libs/stats/include/bazaartalks/stats/technical_indicators.hpp": {
+    "mtime": 1783856383.777561,
+    "seen": 1789968622.3133419,
+    "ast_hash": "795826ee8831604c03be8cac41b7e5c4",
+    "semantic_hash": ""
+  },
+  "libs/stats/src/cross_sectional.cpp": {
+    "mtime": 1783856383.777718,
+    "seen": 1789968622.313347,
+    "ast_hash": "0278f50bc226b76f85b23a9b67ea9783",
+    "semantic_hash": ""
+  },
+  "libs/stats/src/technical_indicators.cpp": {
+    "mtime": 1783856383.777944,
+    "seen": 1789968622.3133519,
+    "ast_hash": "770717befc91f93baa0e061b66853abd",
+    "semantic_hash": ""
+  },
+  "libs/stats/tests/cross_sectional_tests.cpp": {
+    "mtime": 1783856383.778093,
+    "seen": 1789968622.313452,
+    "ast_hash": "fa3133b60bf2387b51f682199f709c4d",
+    "semantic_hash": ""
+  },
+  "libs/stats/tests/technical_indicators_tests.cpp": {
+    "mtime": 1783856383.778299,
+    "seen": 1789968622.3134642,
+    "ast_hash": "d524a9a02f7b29bb002428f23683c3b9",
+    "semantic_hash": ""
+  },
+  "libs/storage/cassandra_client/include/bazaartalks/storage/market_store.hpp": {
+    "mtime": 1783856383.778894,
+    "seen": 1789968622.31347,
+    "ast_hash": "2b61060b75b77c90bf221ef9b433ce66",
+    "semantic_hash": ""
+  },
+  "libs/storage/cassandra_client/src/market_store.cpp": {
+    "mtime": 1783856383.779083,
+    "seen": 1789968622.313476,
+    "ast_hash": "b6c73db08983e4a7a1440ddb46d22268",
+    "semantic_hash": ""
+  },
+  "libs/storage/cassandra_client/tests/market_store_tests.cpp": {
+    "mtime": 1783856383.779249,
+    "seen": 1789968622.3134809,
+    "ast_hash": "7133740a330c9a2cbab87e5c55725d9e",
+    "semantic_hash": ""
+  },
+  "libs/storage/databento_client/include/bazaartalks/storage/databento_client.hpp": {
+    "mtime": 1783856383.779692,
+    "seen": 1789968622.313487,
+    "ast_hash": "1eb89af911c73db9ec47960d1b568b85",
+    "semantic_hash": ""
+  },
+  "libs/storage/databento_client/src/databento_client.cpp": {
+    "mtime": 1783856383.779904,
+    "seen": 1789968622.313657,
+    "ast_hash": "8ae595492594126e2593ac412b4a8cb8",
+    "semantic_hash": ""
+  },
+  "libs/storage/databento_client/tests/databento_client_integration_tests.cpp": {
+    "mtime": 1783856383.78005,
+    "seen": 1789968622.313662,
+    "ast_hash": "eefad9a9571b06c808f943830c0b0d88",
+    "semantic_hash": ""
+  },
+  "libs/storage/databento_client/tests/databento_client_tests.cpp": {
+    "mtime": 1783856383.780165,
+    "seen": 1789193274.6618629,
+    "ast_hash": "6609ee6a653855b7a4535b901d1fe391",
+    "semantic_hash": ""
+  },
+  "libs/storage/duckdb_client/include/bazaartalks/storage/warehouse.hpp": {
+    "mtime": 1783856383.780552,
+    "seen": 1789968622.313674,
+    "ast_hash": "6fd4a32cdc322311ff3649f4daec00b4",
+    "semantic_hash": ""
+  },
+  "libs/storage/duckdb_client/src/warehouse.cpp": {
+    "mtime": 1783856383.780693,
+    "seen": 1789968622.3136792,
+    "ast_hash": "8ac0a51a8beeed437cb08af3e4168824",
+    "semantic_hash": ""
+  },
+  "libs/storage/duckdb_client/tests/warehouse_tests.cpp": {
+    "mtime": 1783856383.78083,
+    "seen": 1789968622.313685,
+    "ast_hash": "35728fd8048113593d9e190040a95325",
+    "semantic_hash": ""
+  },
+  "libs/storage/parquet_io/include/bazaartalks/storage/wide_frame.hpp": {
+    "mtime": 1783856383.781211,
+    "seen": 1789968622.313689,
+    "ast_hash": "e6f1dd3601bd5bb02b677bd63114ef78",
+    "semantic_hash": ""
+  },
+  "libs/storage/parquet_io/src/wide_frame.cpp": {
+    "mtime": 1783856383.781354,
+    "seen": 1789968622.313694,
+    "ast_hash": "c4a99ea4d57ca8f2c883c5aa66262aa9",
+    "semantic_hash": ""
+  },
+  "libs/storage/parquet_io/tests/wide_frame_tests.cpp": {
+    "mtime": 1783856383.781486,
+    "seen": 1789968622.313699,
+    "ast_hash": "4437ea068b49b025176316e0ec431bee",
+    "semantic_hash": ""
+  },
+  "libs/storage/sqlite_client/include/bazaartalks/storage/sqlite_db.hpp": {
+    "mtime": 1783856383.78185,
+    "seen": 1789193274.661868,
+    "ast_hash": "43900ccbf88fcf949674cc5299ba5654",
+    "semantic_hash": ""
+  },
+  "libs/storage/sqlite_client/src/sqlite_db.cpp": {
+    "mtime": 1783856383.781978,
+    "seen": 1789968622.3137112,
+    "ast_hash": "ceaa0ee65460eba3ed3daf858d03abfe",
+    "semantic_hash": ""
+  },
+  "libs/storage/sqlite_client/tests/sqlite_db_tests.cpp": {
+    "mtime": 1783856383.782107,
+    "seen": 1789193274.661869,
+    "ast_hash": "b875560affa3f92f4e557f621d114a86",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/include/bazaartalks/streaming/kafka_consumer.hpp": {
+    "mtime": 1783856383.782602,
+    "seen": 1789968622.3137228,
+    "ast_hash": "8cb38aa15de1828ea4a6aa3c5e1ceadd",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/include/bazaartalks/streaming/kafka_producer.hpp": {
+    "mtime": 1783856383.782688,
+    "seen": 1789968622.313728,
+    "ast_hash": "a762e83aa9111ebbd23b8c1553db7852",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/src/kafka_consumer.cpp": {
+    "mtime": 1783856383.782819,
+    "seen": 1789968622.313733,
+    "ast_hash": "0aa2f5ff4a3a888a83d1655df406ff8b",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/src/kafka_producer.cpp": {
+    "mtime": 1783856383.782902,
+    "seen": 1789968622.3137379,
+    "ast_hash": "448b768f3b264f11c3baa82934e30968",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/tests/kafka_consumer_tests.cpp": {
+    "mtime": 1783856383.783038,
+    "seen": 1789968622.313743,
+    "ast_hash": "00f1f0bd2e0e085e9614fc509aa43b45",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/tests/kafka_producer_tests.cpp": {
+    "mtime": 1783856383.783121,
+    "seen": 1789968622.313747,
+    "ast_hash": "adfc0ec4b6919609c95537805fe3c5d7",
+    "semantic_hash": ""
+  },
+  "ops/backup_kafka_logs.sh": {
+    "mtime": 1783856383.783253,
+    "seen": 1789968622.3137531,
+    "ast_hash": "80ca05d8e078f82511bdf2e59367c3ad",
+    "semantic_hash": ""
+  },
+  "ops/rotate_kafka_logs.sh": {
+    "mtime": 1783856383.783345,
+    "seen": 1789968622.313758,
+    "ast_hash": "f3bba89c1082682c28632b62e018f6e1",
+    "semantic_hash": ""
+  },
+  "overlay-ports/databento-cpp/vcpkg.json": {
+    "mtime": 1783856383.783606,
+    "seen": 1789968622.3137631,
+    "ast_hash": "282e326df5834c6dab2a840c2720a75e",
+    "semantic_hash": ""
+  },
+  "scripts/check_layering.py": {
+    "mtime": 1783856383.783859,
+    "seen": 1789968622.313768,
+    "ast_hash": "3fb4f8b7aa96e424b7c2179e024061b0",
+    "semantic_hash": ""
+  },
+  "scripts/verify_integrity.sh": {
+    "mtime": 1783856383.78394,
+    "seen": 1789968622.3137732,
+    "ast_hash": "51a2b5dac04d22006ba8defc10fc38d4",
+    "semantic_hash": ""
+  },
+  "services/databento_ingest/src/main.cpp": {
+    "mtime": 1783856383.784229,
+    "seen": 1789968622.313778,
+    "ast_hash": "4ed19066c424b043a94f491a338e9568",
+    "semantic_hash": ""
+  },
+  "services/pipeline_cli/src/main.cpp": {
+    "mtime": 1783856383.784523,
+    "seen": 1789968622.313783,
+    "ast_hash": "dd1ce37f9b1e8384c3184b75c7ca1c36",
+    "semantic_hash": ""
+  },
+  "services/serve_api/src/main.cpp": {
+    "mtime": 1783856383.784801,
+    "seen": 1789968622.313788,
+    "ast_hash": "597900c80b547273bf66763617115c4a",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/cdc_consumer/include/bazaartalks/services/cdc_consumer.hpp": {
+    "mtime": 1783856383.7853,
+    "seen": 1789968622.3137941,
+    "ast_hash": "77d12a58bb1b5714eda370f26f200dc7",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/cdc_consumer/src/cdc_consumer.cpp": {
+    "mtime": 1783856383.785412,
+    "seen": 1789968622.313799,
+    "ast_hash": "8803520062a46d95265878d5122c2566",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/cdc_consumer/src/main.cpp": {
+    "mtime": 1783856383.785509,
+    "seen": 1789968622.3138041,
+    "ast_hash": "3c82dc2b8f90ec16722387964bee4e0b",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/cdc_consumer/tests/cdc_consumer_integration_tests.cpp": {
+    "mtime": 1783856383.785641,
+    "seen": 1789968622.313809,
+    "ast_hash": "6571131cb78db237afe7d52ad5394afe",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/cdc_consumer/tests/cdc_consumer_tests.cpp": {
+    "mtime": 1783856383.785719,
+    "seen": 1789968622.313814,
+    "ast_hash": "98602839cce6f633e3f1e6f0d8fab535",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/signal_consumer/include/bazaartalks/services/signal_consumer.hpp": {
+    "mtime": 1783856383.786048,
+    "seen": 1789968622.313819,
+    "ast_hash": "ff3c699e6cd9cd2a8461180acf85bdcf",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/signal_consumer/src/main.cpp": {
+    "mtime": 1783856383.786164,
+    "seen": 1789968622.313824,
+    "ast_hash": "28674b01723babc9bf76aa14175cde0b",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/signal_consumer/src/signal_consumer.cpp": {
+    "mtime": 1783856383.786244,
+    "seen": 1789968622.3138292,
+    "ast_hash": "bbb224293e4bda4033ef9866a42df13a",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/signal_consumer/tests/signal_consumer_integration_tests.cpp": {
+    "mtime": 1783856383.786364,
+    "seen": 1789968622.313834,
+    "ast_hash": "800b0f9883db8581143d95a0cb0d6117",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/signal_consumer/tests/signal_consumer_tests.cpp": {
+    "mtime": 1783856383.786444,
+    "seen": 1789968622.3138392,
+    "ast_hash": "6c6ee30fabd26a3e96f747a5636e67ac",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/ticker_signal_pipeline/include/bazaartalks/services/ticker_signal_pipeline.hpp": {
+    "mtime": 1783856383.786804,
+    "seen": 1789968622.313844,
+    "ast_hash": "c37a03ec5af886a9c3f6ce2d787ef8ce",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/ticker_signal_pipeline/src/main.cpp": {
+    "mtime": 1783856383.786931,
+    "seen": 1789968622.313849,
+    "ast_hash": "a7da7ab956e0aa49a09d2d0a74d6c667",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/ticker_signal_pipeline/src/ticker_signal_pipeline.cpp": {
+    "mtime": 1783856383.787004,
+    "seen": 1789968622.313855,
+    "ast_hash": "666f882508b8ac53687a685bb32d5416",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/ticker_signal_pipeline/tests/ticker_signal_pipeline_integration_tests.cpp": {
+    "mtime": 1783856383.787121,
+    "seen": 1789968622.3138602,
+    "ast_hash": "a7befbfee46ce4874a1e260829a2e2e1",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/ticker_signal_pipeline/tests/ticker_signal_pipeline_tests.cpp": {
+    "mtime": 1783856383.787199,
+    "seen": 1789968622.313865,
+    "ast_hash": "1e59d16fa6b077c5a46e31510f9efacf",
+    "semantic_hash": ""
+  },
+  "vcpkg-configuration.json": {
+    "mtime": 1783856383.787276,
+    "seen": 1789968622.3138702,
+    "ast_hash": "86c18095ce9775a48504a7d4fb839baf",
+    "semantic_hash": ""
+  },
+  "vcpkg.json": {
+    "mtime": 1783856383.787349,
+    "seen": 1789193274.66189,
+    "ast_hash": "25da34b21542f304a2d03bb19fdb10ff",
+    "semantic_hash": ""
+  },
+  ".github/workflows/ci.yml": {
+    "mtime": 1783856383.749868,
+    "seen": 1789968622.3138812,
+    "ast_hash": "bb90b95344fff80afa33616691779704",
+    "semantic_hash": ""
+  },
+  "CMakeLists.txt": {
+    "mtime": 1783856383.750401,
+    "seen": 1789193274.661891,
+    "ast_hash": "d7ee5c28f4512e76d17424ae6f667433",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1789402247.742117,
+    "seen": 1789968622.3138921,
+    "ast_hash": "88fe100b7bb9d904700ef3a05e7347d0",
+    "semantic_hash": ""
+  },
+  "benchmarks/pipeline_cutover/README.md": {
+    "mtime": 1783856383.750958,
+    "seen": 1789968622.313897,
+    "ast_hash": "29fbd0880d044ecb99169ff831ade29f",
+    "semantic_hash": ""
+  },
+  "benchmarks/pipeline_cutover/report_2026-07-12.html": {
+    "mtime": 1783856383.751602,
+    "seen": 1789968622.3139021,
+    "ast_hash": "139de91d2c93bc4dfc79acfee9d3fb1d",
+    "semantic_hash": ""
+  },
+  "docs/MIGRATION_PLAN.md": {
+    "mtime": 1783856383.752902,
+    "seen": 1789968622.3139079,
+    "ast_hash": "e35e34f0d6a3b3ef145ce68555b72f0a",
+    "semantic_hash": ""
+  },
+  "libs/calendar/CMakeLists.txt": {
+    "mtime": 1783856383.75319,
+    "seen": 1789968622.3139122,
+    "ast_hash": "e67d3b952238b650e888c946e0cad59a",
+    "semantic_hash": ""
+  },
+  "libs/linalg/CMakeLists.txt": {
+    "mtime": 1783856383.754106,
+    "seen": 1789968622.313917,
+    "ast_hash": "58a4cfc5700961951154efbc4c9bf3f6",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/CMakeLists.txt": {
+    "mtime": 1783856383.755098,
+    "seen": 1789968622.3139231,
+    "ast_hash": "f04b96ae48fbe547eefd8d209df13c9f",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/benchmark/CMakeLists.txt": {
+    "mtime": 1783856383.755276,
+    "seen": 1789968622.313928,
+    "ast_hash": "6306180955b8a643c878bbda51e8a1d7",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/charts/CMakeLists.txt": {
+    "mtime": 1783856383.756218,
+    "seen": 1789193274.661897,
+    "ast_hash": "97664ef5e87b47783438fac453bd3f7e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/cost_models/CMakeLists.txt": {
+    "mtime": 1783856383.75712,
+    "seen": 1789968622.313938,
+    "ast_hash": "03bc1a322a110ec1b5ddfea7d3f196ee",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/crowding/CMakeLists.txt": {
+    "mtime": 1783856383.758029,
+    "seen": 1789193274.661898,
+    "ast_hash": "0381335179c0fd4cdf4c357e08dd440d",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/darvas_volume/CMakeLists.txt": {
+    "mtime": 1783856383.758844,
+    "seen": 1789968622.313948,
+    "ast_hash": "335bf13d61b7240abf5337c78ba98209",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_composite/CMakeLists.txt": {
+    "mtime": 1783856383.75964,
+    "seen": 1789968622.313953,
+    "ast_hash": "d70fffd337f0cc5356ede3b7410161e7",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_engine/CMakeLists.txt": {
+    "mtime": 1783856383.760462,
+    "seen": 1789968622.313958,
+    "ast_hash": "4704dff8f3ac4b75126428bac75cb74e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/dvm_global/CMakeLists.txt": {
+    "mtime": 1783856383.761673,
+    "seen": 1789968622.313963,
+    "ast_hash": "df738c12b816869b93f19c93e18a0cf2",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/factor_research/CMakeLists.txt": {
+    "mtime": 1783856383.762628,
+    "seen": 1789968622.3139682,
+    "ast_hash": "b473116598372c4ffc0923711daa8d93",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/fx/CMakeLists.txt": {
+    "mtime": 1783856383.763592,
+    "seen": 1789968622.313972,
+    "ast_hash": "644b74f8393e6f3edea4b29eb218f6d1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/hft_selection/CMakeLists.txt": {
+    "mtime": 1783856383.764367,
+    "seen": 1789968622.313977,
+    "ast_hash": "f5ba0d938714d54d91011441d59a6310",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/meta_screen/CMakeLists.txt": {
+    "mtime": 1783856383.765196,
+    "seen": 1789968622.313982,
+    "ast_hash": "764e7c6b5c8e6c0bc4530af20d91a1ca",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ml_signal_engine/CMakeLists.txt": {
+    "mtime": 1783856383.76595,
+    "seen": 1789968622.313987,
+    "ast_hash": "9737b38746111e5e439aef1add31ea40",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/momentum_breakout/CMakeLists.txt": {
+    "mtime": 1783856383.767401,
+    "seen": 1789968622.313992,
+    "ast_hash": "d81ed341f2a47eac5ba2141a00674eae",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_backtest/CMakeLists.txt": {
+    "mtime": 1783856383.768252,
+    "seen": 1789968622.313997,
+    "ast_hash": "f908011c4906d14f72bd1365d2f81f65",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/pit_global/CMakeLists.txt": {
+    "mtime": 1783856383.769035,
+    "seen": 1789968622.314002,
+    "ast_hash": "da632992f97144ebdd00837dc15e443e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/portfolio/CMakeLists.txt": {
+    "mtime": 1783856383.769819,
+    "seen": 1789968622.314007,
+    "ast_hash": "08f6a1c20f1b514b157b6ee34fec93b1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/quality_factor/CMakeLists.txt": {
+    "mtime": 1783856383.770581,
+    "seen": 1789193274.661907,
+    "ast_hash": "d66a29b7f0f21c6991ce82ccc27742a1",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/query_catalog/CMakeLists.txt": {
+    "mtime": 1783856383.771445,
+    "seen": 1789193274.661908,
+    "ast_hash": "2972c5072f18910f233dbb8ba767476e",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/risk/CMakeLists.txt": {
+    "mtime": 1783856383.772219,
+    "seen": 1789968622.314029,
+    "ast_hash": "eb6b86b0ee527c6b9ce332126dcb790a",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/screen_viability/CMakeLists.txt": {
+    "mtime": 1783856383.772998,
+    "seen": 1789968622.314034,
+    "ast_hash": "dfab94aec90484f5dd22192cba44e4a9",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/ticker_view/CMakeLists.txt": {
+    "mtime": 1783856383.77379,
+    "seen": 1789968622.314039,
+    "ast_hash": "143e5e1b88c483f2a67dfd2609598009",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/turbulence_index/CMakeLists.txt": {
+    "mtime": 1783856383.774665,
+    "seen": 1789193274.661912,
+    "ast_hash": "12bb98f835a293d8b8ef5ce5b6a176d9",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/universe/CMakeLists.txt": {
+    "mtime": 1783856383.775485,
+    "seen": 1789968622.31405,
+    "ast_hash": "e8b32b1720d991b467af27e15be76432",
+    "semantic_hash": ""
+  },
+  "libs/quant_core/unlisted_valuation/CMakeLists.txt": {
+    "mtime": 1783856383.776578,
+    "seen": 1789968622.314055,
+    "ast_hash": "ec48ad45ebece346a4de8e949d2da524",
+    "semantic_hash": ""
+  },
+  "libs/stats/CMakeLists.txt": {
+    "mtime": 1783856383.777197,
+    "seen": 1789968622.3140612,
+    "ast_hash": "0c61564d602fe507022531d81ad375e0",
+    "semantic_hash": ""
+  },
+  "libs/storage/CMakeLists.txt": {
+    "mtime": 1783856383.778472,
+    "seen": 1789968622.314066,
+    "ast_hash": "f82a31460e08b2538a8a886c5313f1fe",
+    "semantic_hash": ""
+  },
+  "libs/storage/cassandra_client/CMakeLists.txt": {
+    "mtime": 1783856383.778628,
+    "seen": 1789968622.314071,
+    "ast_hash": "899c40398bc70aaceb74c526fe78fd7b",
+    "semantic_hash": ""
+  },
+  "libs/storage/databento_client/CMakeLists.txt": {
+    "mtime": 1783856383.779392,
+    "seen": 1789968622.314076,
+    "ast_hash": "bd337712b002b5a91c4b2d732614bbc0",
+    "semantic_hash": ""
+  },
+  "libs/storage/duckdb_client/CMakeLists.txt": {
+    "mtime": 1783856383.780306,
+    "seen": 1789968622.31411,
+    "ast_hash": "65cf5ee0fab2975aefe0757f18a3bf28",
+    "semantic_hash": ""
+  },
+  "libs/storage/parquet_io/CMakeLists.txt": {
+    "mtime": 1783856383.780963,
+    "seen": 1789968622.3141172,
+    "ast_hash": "fe0cb1aec8dd053cd17560a04309d282",
+    "semantic_hash": ""
+  },
+  "libs/storage/sqlite_client/CMakeLists.txt": {
+    "mtime": 1783856383.781622,
+    "seen": 1789968622.314122,
+    "ast_hash": "d0c6531a53a653b5a904427554fb1ac2",
+    "semantic_hash": ""
+  },
+  "libs/streaming/CMakeLists.txt": {
+    "mtime": 1783856383.782229,
+    "seen": 1789968622.3141272,
+    "ast_hash": "dafac6d860e208702bb3a456464ab7de",
+    "semantic_hash": ""
+  },
+  "libs/streaming/kafka_client/CMakeLists.txt": {
+    "mtime": 1783856383.782357,
+    "seen": 1789968622.314132,
+    "ast_hash": "2c92ec1883a42a7bcf9861940e6f049f",
+    "semantic_hash": ""
+  },
+  "python-sidecar/README.md": {
+    "mtime": 1783856383.783734,
+    "seen": 1789193274.66192,
+    "ast_hash": "ede3d6b81d02a04268eed0db2a2eccca",
+    "semantic_hash": ""
+  },
+  "requirements.md": {
+    "mtime": 1785627820.810643,
+    "seen": 1789968622.314143,
+    "ast_hash": "9d3fdc904303dda9050b882203fb79c1",
+    "semantic_hash": ""
+  },
+  "services/databento_ingest/CMakeLists.txt": {
+    "mtime": 1783856383.784106,
+    "seen": 1789968622.314146,
+    "ast_hash": "8e1ca355c3b3fe820c9bf6f1af4ed7ff",
+    "semantic_hash": ""
+  },
+  "services/pipeline_cli/CMakeLists.txt": {
+    "mtime": 1783856383.784339,
+    "seen": 1789968622.3141491,
+    "ast_hash": "a6318633f13ddb4f590c55876a6a79f3",
+    "semantic_hash": ""
+  },
+  "services/serve_api/CMakeLists.txt": {
+    "mtime": 1783856383.784646,
+    "seen": 1789968622.3141508,
+    "ast_hash": "20e8a9208cbcbe0c307f3fcef85c1739",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/CMakeLists.txt": {
+    "mtime": 1783856383.784958,
+    "seen": 1789968622.314154,
+    "ast_hash": "1dafcb5d9a409346f3abc35bdb141d3e",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/cdc_consumer/CMakeLists.txt": {
+    "mtime": 1783856383.785086,
+    "seen": 1789968622.314157,
+    "ast_hash": "0dd0150f7fadaa3c2f016bd0dfd6f115",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/signal_consumer/CMakeLists.txt": {
+    "mtime": 1783856383.785832,
+    "seen": 1789968622.3141592,
+    "ast_hash": "24d8de79a6f17f1f43c731f961bae389",
+    "semantic_hash": ""
+  },
+  "services/stream_consumers/ticker_signal_pipeline/CMakeLists.txt": {
+    "mtime": 1783856383.786567,
+    "seen": 1789968622.314162,
+    "ast_hash": "ddcde908504b21f3abd5b3a0908f92f5",
+    "semantic_hash": ""
+  }
+}
