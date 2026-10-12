@@ -1,5 +1,9 @@
 # BazaarTalks-cpp
 
+<!-- how-to-use-with-ai -->
+> **New here?** See [How to use this repo with AI (Claude, Gemini, ChatGPT)](HOW_TO_USE_WITH_AI.md) — clone it, paste it into an AI tool, and ask in plain English.
+
+
 C++ reimplementation of [BazaarTalks](https://github.com/herrrickshaw/BazaarTalks)'s storage,
 streaming, factor/quant compute, backtest, and HTTP serving layers. See
 `docs/MIGRATION_PLAN.md` for the full phased plan, the Python boundary
