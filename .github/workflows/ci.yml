@@ -9,7 +9,7 @@ jobs:
   build-test:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install build tools
         run: |
@@ -91,14 +91,14 @@ jobs:
   governance:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Phase-boundary / layering check
         run: python3 scripts/check_layering.py
 
   integrity:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Verify tracked-file checksums
         run: bash scripts/verify_integrity.sh
 
@@ -111,5 +111,5 @@ jobs:
   #   if: contains(github.event.pull_request.changed_files, 'libs/quant_core/backtest/')
   #   runs-on: macos-14
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v7
   #     - run: ctest --preset ci-test -L pit-lookahead-gate
