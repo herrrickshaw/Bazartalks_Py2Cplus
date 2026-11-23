@@ -127,6 +127,18 @@ def test_bench_python_invokes_runner_per_stage(tmp_path, monkeypatch, capsys):
     assert not (work / "py_bench.duckdb").exists()
 
 
+def test_bench_python_process_failure_asserts_before_any_analyze(tmp_path, monkeypatch):
+    calls = []
+
+    def run(cmd, capture_output, text, env):
+        calls.append(cmd)
+        return proc(rc=4, stderr="process died") if "--process" in cmd else proc('{"scored": 1}')
+
+    with pytest.raises(AssertionError, match="process died"):
+        execute("bench_python.py", monkeypatch, [str(tmp_path)], run=run)
+    assert len(calls) == 1
+
+
 def test_bench_python_analyze_failure_asserts(tmp_path, monkeypatch):
     def run(cmd, capture_output, text, env):
         return proc('{"ok": 1}') if "--process" in cmd else proc(rc=2, stderr="analyze died")
