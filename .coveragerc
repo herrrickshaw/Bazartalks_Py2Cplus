@@ -1,0 +1,6 @@
+[run]
+# Python helpers only (the C++ code is built and tested by ci.yml / ctest).
+source = scripts, benchmarks
+omit =
+    tests/*
+    */conftest.py
