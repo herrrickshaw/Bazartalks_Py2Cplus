@@ -18,8 +18,8 @@ double round_n(double x, int decimals) {
 }
 }  // namespace
 
-ScreenSignals screens_for(const std::vector<double>& close, const std::vector<double>& high,
-                          const std::vector<double>& low, const std::vector<double>& volume) {
+ScreenSignals screens_for(const std::vector<double>& close, const std::vector<double>& /*high*/,
+                          const std::vector<double>& /*low*/, const std::vector<double>& volume) {
   using namespace bazaartalks::stats;
   std::size_t n = close.size();
 
@@ -70,7 +70,7 @@ std::vector<ScreenEvalRow> eval_ticker(const std::vector<double>& close,
   double sum = 0.0;
   int count = 0;
   for (std::size_t i = 0; i + static_cast<std::size_t>(horizon) < n; ++i) {
-    double raw = (close[i + horizon] / close[i] - 1.0) * 100.0;
+    double raw = (close[i + static_cast<std::size_t>(horizon)] / close[i] - 1.0) * 100.0;
     double clipped = std::min(clip, std::max(-clip, raw));
     fwd[i] = clipped;
     sum += clipped;

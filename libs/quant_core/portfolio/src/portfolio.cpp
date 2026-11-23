@@ -9,6 +9,11 @@
 
 namespace bazaartalks::quant_core {
 
+namespace {
+// Eigen::Index is signed; std::vector/std::string indexing is unsigned.
+constexpr std::size_t idx(Eigen::Index i) { return static_cast<std::size_t>(i); }
+}  // namespace
+
 Vector min_variance_weights(const Matrix& cov) {
   Matrix inv = bazaartalks::linalg::pinv(cov);
   Vector one = Vector::Ones(cov.rows());
@@ -38,30 +43,30 @@ Vector cap_weights(const Vector& w_in, double cap, int iters) {
     return Vector::Ones(n) / static_cast<double>(n);
   }
   for (int it = 0; it < iters; ++it) {
-    std::vector<bool> over(n);
+    std::vector<bool> over(idx(n));
     bool any_over = false;
     double excess = 0.0;
     for (Eigen::Index i = 0; i < n; ++i) {
-      over[i] = w(i) > cap + 1e-12;
-      if (over[i]) {
+      over[idx(i)] = w(i) > cap + 1e-12;
+      if (over[idx(i)]) {
         any_over = true;
         excess += w(i) - cap;
       }
     }
     if (!any_over) break;
     for (Eigen::Index i = 0; i < n; ++i)
-      if (over[i]) w(i) = cap;
+      if (over[idx(i)]) w(i) = cap;
 
     double free_sum = 0.0;
     for (Eigen::Index i = 0; i < n; ++i)
-      if (!over[i] && w(i) > 0.0) free_sum += w(i);
+      if (!over[idx(i)] && w(i) > 0.0) free_sum += w(i);
 
     if (free_sum <= 0.0) {
       w.setConstant(cap);
       break;
     }
     for (Eigen::Index i = 0; i < n; ++i) {
-      if (!over[i] && w(i) > 0.0) w(i) += excess * w(i) / free_sum;
+      if (!over[idx(i)] && w(i) > 0.0) w(i) += excess * w(i) / free_sum;
     }
   }
   return w / w.sum();
@@ -86,7 +91,7 @@ Vector apply_sector_cap(const Vector& w_in, const std::vector<std::string>& sect
   for (int it = 0; it < iters; ++it) {
     std::unordered_map<std::string, double> totals;
     for (const auto& s : uniq) totals[s] = 0.0;
-    for (Eigen::Index i = 0; i < n; ++i) totals[sectors[i]] += w(i);
+    for (Eigen::Index i = 0; i < n; ++i) totals[sectors[idx(i)]] += w(i);
 
     std::vector<std::string> over;
     for (const auto& s : uniq)
@@ -100,16 +105,16 @@ Vector apply_sector_cap(const Vector& w_in, const std::vector<std::string>& sect
       excess += sector_sum - cap;
       double scale = cap / sector_sum;
       for (Eigen::Index i = 0; i < n; ++i)
-        if (sectors[i] == s) w(i) *= scale;
+        if (sectors[idx(i)] == s) w(i) *= scale;
     }
 
     double free_sum = 0.0;
     for (Eigen::Index i = 0; i < n; ++i) {
-      if (!over_set.count(sectors[i]) && w(i) > 0.0) free_sum += w(i);
+      if (!over_set.count(sectors[idx(i)]) && w(i) > 0.0) free_sum += w(i);
     }
     if (free_sum <= 0.0) break;
     for (Eigen::Index i = 0; i < n; ++i) {
-      if (!over_set.count(sectors[i]) && w(i) > 0.0) w(i) += excess * w(i) / free_sum;
+      if (!over_set.count(sectors[idx(i)]) && w(i) > 0.0) w(i) += excess * w(i) / free_sum;
     }
   }
   return w / w.sum();

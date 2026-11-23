@@ -108,7 +108,7 @@ FeatureMatrix compute_features(const OhlcSeries& ohlc) {
     bool all_finite = std::all_of(row.begin(), row.end(), [](double v) { return std::isfinite(v); });
     if (!all_finite) continue;
     Eigen::VectorXd erow(12);
-    for (int c = 0; c < 12; ++c) erow(c) = row[c];
+    for (int c = 0; c < 12; ++c) erow(c) = row[static_cast<std::size_t>(c)];
     rows.push_back(erow);
     out.source_index.push_back(i);
   }
