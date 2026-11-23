@@ -65,6 +65,7 @@ def test_bench_cpp_json_and_command_lines(tmp_path, monkeypatch, capsys):
     assert calls[0][:2] == ["/bin/cli", "--process"] and calls[1][:3] == ["/bin/cli", "--analyze", "US"]
     assert len(calls) == 1 + len(MARKETS)
     common = calls[0][2:]
+    assert all(c[3:] == common for c in calls[1:])                      # every analyze call repeats the same data arguments
     assert common == ["--duckdb", str(work / "cpp_bench.duckdb"), "--ohlc-dir", "/seed", "--ohlc-dir", str(repo / "cache_seed_local"),
                       "--fundamentals-db", str(repo / "fundamentals_cache.db"), "--dvm-global-db", str(repo / "dvm_global.db"),
                       "--dvm-composite-db", str(repo / "dvm_composite.db"), "--viability-db", str(repo / "viability_summary.db")]
@@ -124,6 +125,22 @@ def test_bench_python_invokes_runner_per_stage(tmp_path, monkeypatch, capsys):
     assert env0["BAZAARTALKS_BENCH_DUCKDB"] == str(work / "py_bench.duckdb")
     assert calls[1][0][2:] == ["--analyze", "US"] and len(calls) == 1 + len(MARKETS)
     assert not (work / "py_bench.duckdb").exists()
+
+
+def test_bench_python_analyze_failure_asserts(tmp_path, monkeypatch):
+    def run(cmd, capture_output, text, env):
+        return proc('{"ok": 1}') if "--process" in cmd else proc(rc=2, stderr="analyze died")
+
+    with pytest.raises(AssertionError, match="analyze died"):
+        execute("bench_python.py", monkeypatch, [str(tmp_path)], run=run)
+
+
+def test_bench_python_empty_runner_output_is_an_error(tmp_path, monkeypatch):
+    def run(cmd, capture_output, text, env):
+        return proc('{"ok": 1}') if "--process" in cmd else proc("")
+
+    with pytest.raises(json.JSONDecodeError):
+        execute("bench_python.py", monkeypatch, [str(tmp_path)], run=run)
 
 
 def test_bench_python_failure_asserts(tmp_path, monkeypatch):
@@ -192,7 +209,8 @@ def test_runner_analyze_mode(tmp_path, monkeypatch, capsys, fake_stack):
     assert log[0] == ("connect", "/tmp/y.duckdb") and log[1] == "build" and log[-1] == "closed"
     sqls = [x for x in log if isinstance(x, tuple) and len(x) == 2 and isinstance(x[0], str) and x[0].startswith("SELECT")]
     assert [p for _, p in sqls] == [["JP"], ["JP"]]
-    assert "FROM dvm_global WHERE market = ?" in sqls[0][0] and "FROM dvm_composite WHERE market = ?" in sqls[1][0]
+    assert sqls[0][0] == "SELECT count(*) scored, round(avg(M),1) avg_M FROM dvm_global WHERE market = ?"
+    assert sqls[1][0] == "SELECT code, label, count(*) n FROM dvm_composite WHERE market = ? GROUP BY 1,2 ORDER BY n DESC"
     assert sys.path[0] == "/repo" and wh.SEED == os.path.expanduser("~/market-data-artifacts/seed_ohlc")
     sys.path[:] = saved
 
