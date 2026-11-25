@@ -39,7 +39,7 @@ jobs:
           brew services start cassandra
 
       - name: Cache vcpkg
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             vcpkg
