@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-test:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v7
 
@@ -89,14 +89,14 @@ jobs:
         run: ctest --preset ci-test
 
   governance:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v7
       - name: Phase-boundary / layering check
         run: python3 scripts/check_layering.py
 
   integrity:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v7
       - name: Verify tracked-file checksums
@@ -109,7 +109,7 @@ jobs:
   # since that library doesn't exist yet in Phase 0/1.
   # parity-gate:
   #   if: contains(github.event.pull_request.changed_files, 'libs/quant_core/backtest/')
-  #   runs-on: macos-14
+  #   runs-on: macos-15
   #   steps:
   #     - uses: actions/checkout@v7
   #     - run: ctest --preset ci-test -L pit-lookahead-gate
